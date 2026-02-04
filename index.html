@@ -3,153 +3,1290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Романтический сюрприз</title>
+    <title>Для моей любимой | Наши моменты</title>
     <style>
-        /* Используем кастомное изображение сердечка */
         * {
-            cursor: url('https://cdn-icons-png.flaticon.com/128/2107/2107845.png') 16 16, auto;
+            cursor: default;
+            box-sizing: border-box;
         }
-        
-        /* Альтернатива: сердечко в формате SVG прямо в коде */
-        /* Раскомментируйте, если хотите использовать SVG вместо ссылки */
-        /*
-        * {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23e91e63' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") 12 12, auto;
-        }
-        */
         
         body {
-            font-family: 'Georgia', serif;
-            background: #fff5f8;
-            color: #5d3a5d;
+            font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             min-height: 100vh;
             margin: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            padding: 20px;
+            align-items: center;
+            color: #495057;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.5s ease;
         }
         
-        .love-letter {
+        /* Абстрактный фон с геометрическими фигурами */
+        .bg-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(212, 165, 165, 0.05), rgba(169, 169, 169, 0.05));
+            filter: blur(40px);
+        }
+        
+        .bg-shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            background: linear-gradient(45deg, rgba(212, 165, 165, 0.08), rgba(169, 169, 169, 0.05));
+        }
+        
+        .bg-shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            bottom: 15%;
+            right: 10%;
+            background: linear-gradient(45deg, rgba(169, 169, 169, 0.05), rgba(212, 165, 165, 0.08));
+        }
+        
+        /* Основной контейнер */
+        .container {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 60px 40px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.05),
+                0 1px 3px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 900px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        /* Галерея - скрыта по умолчанию */
+        .gallery-container {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .gallery-container.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Кнопка навигации */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #6d6875;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .nav-btn:hover {
             background: white;
-            padding: 40px;
-            border-radius: 10px;
-            max-width: 700px;
-            box-shadow: 0 0 30px rgba(233, 30, 99, 0.1);
-            border: 1px solid #ffebee;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            color: #d4a5a5;
+        }
+        
+        .nav-btn.prev {
+            left: 20px;
+        }
+        
+        .nav-btn.next {
+            right: 20px;
+        }
+        
+        .close-gallery {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #8a817c;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .close-gallery:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: #6d6875;
+            transform: rotate(90deg);
+        }
+        
+        /* Тонкая декоративная линия сверху */
+        .container:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(to right, 
+                transparent, 
+                rgba(212, 165, 165, 0.5), 
+                transparent);
+        }
+        
+        /* Заголовок */
+        .title {
+            font-size: 3.2em;
+            font-weight: 300;
+            color: #6d6875;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .title:after {
+            content: "❤";
+            font-size: 0.7em;
+            color: #d4a5a5;
+            position: absolute;
+            top: -15px;
+            right: -30px;
+            opacity: 0.8;
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+        
+        /* Кнопка перехода к фоткам */
+        .photo-btn {
+            background: linear-gradient(135deg, #d4a5a5, #c9ada7);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 30px 0 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(212, 165, 165, 0.3);
+            letter-spacing: 1px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .photo-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(212, 165, 165, 0.4);
+            letter-spacing: 2px;
+        }
+        
+        .photo-btn:active {
+            transform: translateY(-2px);
+        }
+        
+        .photo-btn:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .photo-btn:hover:before {
+            left: 100%;
+        }
+        
+        .photo-icon {
+            margin-right: 12px;
+            font-size: 1.2em;
+            vertical-align: middle;
+        }
+        
+        /* Стили таймера */
+        .countdown-title {
+            font-size: 1.1em;
+            color: #8a817c;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
+        
+        #countdown {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .countdown-item {
+            background: white;
+            border-radius: 16px;
+            padding: 25px 15px;
+            min-width: 130px;
+            box-shadow: 
+                0 10px 20px rgba(0, 0, 0, 0.04),
+                0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.03);
             position: relative;
         }
         
-        .love-letter:before {
-            content: "❤";
+        .countdown-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 20px 30px rgba(0, 0, 0, 0.07),
+                0 3px 8px rgba(0, 0, 0, 0.08);
+            border-color: rgba(212, 165, 165, 0.2);
+        }
+        
+        .countdown-item:before {
+            content: "";
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #d4a5a5, #c9ada7);
+            border-radius: 16px 16px 0 0;
+            opacity: 0.7;
+        }
+        
+        .countdown-number {
+            font-size: 3.5em;
+            font-weight: 300;
+            color: #6d6875;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .countdown-label {
+            font-size: 0.9em;
+            color: #8a817c;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 500;
+        }
+        
+        .target-date {
+            font-size: 1.2em;
+            color: #8a817c;
+            padding: 15px 25px;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 50px;
+            display: inline-block;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 400;
+            margin-top: 20px;
+        }
+        
+        .target-date strong {
+            color: #6d6875;
+            font-weight: 500;
+        }
+        
+        /* Галерея */
+        .gallery-title {
+            font-size: 2.5em;
+            font-weight: 300;
+            color: #6d6875;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .gallery-title:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #d4a5a5, transparent);
+        }
+        
+        .photo-counter {
+            color: #8a817c;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+        
+        .question-container {
             background: white;
-            padding: 0 20px;
-            font-size: 24px;
-            color: #e91e63;
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            margin: 0 auto 30px;
+            max-width: 700px;
+            position: relative;
+            animation: fadeIn 0.8s ease;
         }
         
-        h1 {
-            color: #e91e63;
+        .question-text {
+            font-size: 2em;
+            color: #6d6875;
+            margin-bottom: 50px;
+            line-height: 1.4;
+            font-weight: 300;
+        }
+        
+        .answers-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .answer-btn {
+            background: linear-gradient(135deg, #d4a5a5, #c9ada7);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(212, 165, 165, 0.25);
+            font-weight: 500;
+            min-width: 250px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .answer-btn.single {
+            min-width: 200px;
+            margin-top: 20px;
+        }
+        
+        .answer-btn.correct {
+            background: linear-gradient(135deg, #a5d4b0, #94c9a1);
+            box-shadow: 0 8px 20px rgba(165, 212, 176, 0.25);
+        }
+        
+        .answer-btn.wrong {
+            background: linear-gradient(135deg, #e0e0e0, #d0d0d0);
+            color: #a0a0a0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .answer-btn.disabled-red {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252) !important;
+            color: white !important;
+            cursor: not-allowed !important;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.25) !important;
+        }
+        
+        .answer-btn:hover:not(.disabled-red) {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(212, 165, 165, 0.35);
+        }
+        
+        .answer-btn.correct:hover {
+            box-shadow: 0 15px 30px rgba(165, 212, 176, 0.35);
+        }
+        
+        .photo-frame {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            margin: 0 auto 30px;
+            max-width: 700px;
+            position: relative;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .photo-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .photo-caption {
+            padding: 25px;
+            background: white;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .caption-date {
+            color: #d4a5a5;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        
+        .caption-text {
+            color: #6d6875;
+            font-size: 1.2em;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        /* Информационный слайд */
+        .info-container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            margin: 0 auto 30px;
+            max-width: 700px;
+            position: relative;
+            animation: fadeIn 0.8s ease;
             text-align: center;
-            border-bottom: 1px dashed #ffc1d6;
-            padding-bottom: 15px;
         }
         
-        .signature {
-            text-align: right;
-            font-family: 'Dancing Script', cursive;
-            font-size: 28px;
-            color: #e91e63;
+        .info-icon {
+            font-size: 4em;
+            margin-bottom: 30px;
+            display: block;
+            animation: gentleFloat 3s ease-in-out infinite;
+            color: #d4a5a5;
+        }
+        
+        .info-title {
+            font-size: 2.5em;
+            color: #6d6875;
+            margin-bottom: 30px;
+            font-weight: 300;
+            line-height: 1.3;
+        }
+        
+        .info-text {
+            font-size: 1.4em;
+            color: #8a817c;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .info-highlight {
+            color: #d4a5a5;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+        
+        .info-note {
+            font-size: 1em;
+            color: #adb5bd;
+            font-style: italic;
             margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .hint {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #a188a1;
-            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #adb5bd;
+            font-style: italic;
+        }
+        
+        .hint:before {
+            content: "💡";
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+        
+        /* Анимации */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes floatUpRandom {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes headNod {
+            0% { transform: translateY(0); }
+            25% { transform: translateY(-8px); }
+            50% { transform: translateY(0); }
+            75% { transform: translateY(4px); }
+            100% { transform: translateY(0); }
+        }
+        
+        @keyframes headShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        .head-nod {
+            animation: headNod 1s ease;
+        }
+        
+        .head-shake {
+            animation: headShake 0.8s ease;
+        }
+        
+        .sparkle {
+            animation: sparkle 1.5s infinite;
+        }
+        
+        .container {
+            animation: gentleFloat 6s ease-in-out infinite;
+        }
+        
+        /* Стили для сердечек */
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 9999;
+            user-select: none;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+        }
+        
+        /* Медиа-запросы */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+                width: 95%;
+            }
+            
+            .title {
+                font-size: 2.4em;
+                margin-bottom: 40px;
+            }
+            
+            .gallery-title {
+                font-size: 2em;
+            }
+            
+            .question-text {
+                font-size: 1.7em;
+            }
+            
+            .info-title {
+                font-size: 2em;
+            }
+            
+            .info-text {
+                font-size: 1.2em;
+            }
+            
+            #countdown {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+            
+            .countdown-item {
+                min-width: calc(50% - 30px);
+                padding: 20px 10px;
+            }
+            
+            .countdown-number {
+                font-size: 2.8em;
+            }
+            
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+            
+            .photo-image {
+                height: 300px;
+            }
+            
+            .answer-btn {
+                min-width: 220px;
+                padding: 15px 25px;
+            }
+            
+            .answer-btn.single {
+                min-width: 180px;
+            }
+            
+            .info-container {
+                padding: 40px 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2em;
+            }
+            
+            .question-text {
+                font-size: 1.4em;
+                padding: 0 15px;
+            }
+            
+            .info-title {
+                font-size: 1.7em;
+            }
+            
+            .info-text {
+                font-size: 1.1em;
+            }
+            
+            #countdown {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .countdown-item {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .photo-btn {
+                padding: 15px 35px;
+                font-size: 1em;
+            }
+            
+            .photo-image {
+                height: 250px;
+            }
+            
+            .caption-text {
+                font-size: 1.1em;
+            }
+            
+            .answer-btn {
+                min-width: 200px;
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+            
+            .answer-btn.single {
+                min-width: 160px;
+            }
+            
+            .info-container {
+                padding: 30px 20px;
+            }
         }
     </style>
-    <!-- Подключаем красивый шрифт для подписи -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="love-letter">
-        <h1>Моему самому дорогому человеку</h1>
-        
-        <p>Дорогая,</p>
-        
-        <p>С каждым днем я понимаю все больше, как сильно мне повезло встретить тебя. Ты — не просто часть моей жизни, ты — самое лучшее в ней.</p>
-        
-        <p>Помнишь, как мы впервые встретились? Я тогда и не думал, что это случайное знакомство перерастет в самое настоящее чудо. Ты изменила мой мир, наполнила его красками, светом и теплом.</p>
-        
-        <p>Сейчас, когда я создаю этот сайт, я думаю о каждой нашей улыбке, каждом разговоре до утра, каждой совместной мечте. И мое сердце наполняется такой нежностью и благодарностью, что словами не передать.</p>
-        
-        <p>Я обещаю всегда быть рядом, поддерживать тебя в любых начинаниях, делать тебя счастливой каждую секунду и любить тебя сильнее с каждым днем.</p>
-        
-        <div class="signature">
-            С любовью,<br>
-            Навеки твой
-        </div>
+    <!-- Фоновые геометрические фигуры -->
+    <div class="bg-shapes">
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
     </div>
     
-    <div class="hint">
-        Попробуй кликнуть в любом месте страницы... ❤️
+    <!-- Основной контейнер -->
+    <div class="container">
+        <!-- Главный экран -->
+        <div id="main-screen">
+            <h1 class="title">Для моей любимой</h1>
+            
+            <div class="countdown-title">До Дня Святого Валентина осталось</div>
+            
+            <div id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">Дней</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Часов</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Минут</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">Секунд</div>
+                </div>
+            </div>
+            
+            <div class="target-date">
+                <strong>14 февраля</strong> в 00:00
+            </div>
+            
+            <!-- Кнопка перехода к фоткам -->
+            <button class="photo-btn" id="go-to-photos">
+                <span class="photo-icon">📸</span> Перейти к фоткам
+            </button>
+            
+            <div class="hint">Кликай в любом месте, чтобы увидеть сюрприз ❤️</div>
+        </div>
+        
+        <!-- Галерея фотографий (скрыта по умолчанию) -->
+        <div class="gallery-container" id="gallery-screen">
+            <button class="close-gallery" id="close-gallery">×</button>
+            
+            <h2 class="gallery-title">Наши лучшие моменты</h2>
+            
+            <div class="photo-counter">
+                <span id="current-photo">0</span> из <span id="total-photos">0</span>
+            </div>
+            
+            <!-- Навигационные кнопки -->
+            <button class="nav-btn prev" id="prev-photo">‹</button>
+            <button class="nav-btn next" id="next-photo">›</button>
+            
+            <!-- Контейнер для фотографий и вопросов -->
+            <div id="gallery-content"></div>
+            
+            <div class="hint" id="gallery-hint">Используй стрелки для навигации или нажимай на кнопки</div>
+        </div>
     </div>
 
     <script>
-        // Создаем летающие сердечки при клике
-        document.addEventListener('click', function(e) {
-            createFloatingHeart(e.clientX, e.clientY);
-        });
+        // Данные фотографий, вопросов и финального сообщения
+        const galleryItems = [
+            // Вопрос 1 - только один вариант ответа
+            {
+                type: 'question',
+                question: 'А знаешь за что я тебя люблю?',
+                correctAnswer: 'За что?',
+                singleAnswer: true
+            },
+            
+            // Фотографии
+            {
+                type: 'photo',
+                image: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: "Наша первая встреча",
+                caption: "Помнишь этот день? Я был так взволнован, что почти забыл, как говорить. А ты улыбалась так, что у меня перехватило дыхание."
+            },
+            {
+                type: 'photo',
+                image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: "Первое совместное путешествие",
+                caption: "Этот закат мы наблюдали вместе, держась за руки. В тот момент я понял, что хочу видеть все закаты мира только с тобой."
+            },
+            {
+                type: 'photo',
+                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: "Твой самый красивый день",
+                caption: "Ты всегда прекрасна, но в этот день ты сияла так, что затмевала всё вокруг. Я счастлив, что могу видеть твою улыбку каждый день."
+            },
+            {
+                type: 'photo',
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: "Наши смешные моменты",
+                caption: "Мы можем смеяться над чем угодно, и это самое ценное. С тобой даже обычные дни превращаются в приключения."
+            },
+            {
+                type: 'photo',
+                image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: "Тихое утро вместе",
+                caption: "Эти утренние моменты, когда мы просто пьём кофе и молча смотрим в окно, для меня дороже любых слов."
+            },
+            
+            // Вопрос 2 - 3 варианта с разным поведением (убрали "Люблю")
+            {
+                type: 'question',
+                question: 'Так стоп... Ты меня любишь?',
+                correctAnswer: 'Сильнее всех на свете',
+                wrongAnswers: ['Да', 'Нет']
+            },
+            
+            // Остальные фотографии
+            {
+                type: 'photo',
+                image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: "Твои задумчивые моменты",
+                caption: "Я люблю наблюдать, как ты о чём-то думаешь. В твоих глазах целые вселенные, и я благодарен, что могу в них смотреть."
+            },
+            {
+                type: 'photo',
+                image: "https://images.unsplash.com/photo-1492681290082-e932832941e6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: "Наше будущее",
+                caption: "Эта фотография напоминает мне о всех мечтах, которые мы строим вместе. С тобой я верю, что всё возможно."
+            },
+            
+            // Финальное информационное сообщение
+            {
+                type: 'info',
+                title: 'А теперь - самый главный сюрприз!',
+                icon: '🎁',
+                text: 'Моя любимая, готовься к самому волшебному вечеру!',
+                details: '14 февраля в 19:00 выходи из дома, и тебя будет ждать...',
+                highlight: 'НАСТОЯЩАЯ КАРЕТА!',
+                note: 'Оденься потеплее и приготовься к сказке 💖'
+            }
+        ];
         
-        function createFloatingHeart(x, y) {
+        let currentItemIndex = 0;
+        let questionAnswered = false;
+        
+        // Элементы DOM
+        const mainScreen = document.getElementById('main-screen');
+        const galleryScreen = document.getElementById('gallery-screen');
+        const goToPhotosBtn = document.getElementById('go-to-photos');
+        const closeGalleryBtn = document.getElementById('close-gallery');
+        const prevPhotoBtn = document.getElementById('prev-photo');
+        const nextPhotoBtn = document.getElementById('next-photo');
+        const galleryContent = document.getElementById('gallery-content');
+        const currentPhotoSpan = document.getElementById('current-photo');
+        const totalPhotosSpan = document.getElementById('total-photos');
+        const galleryHint = document.getElementById('gallery-hint');
+        
+        // Инициализация галереи
+        function initGallery() {
+            const totalItems = galleryItems.filter(item => item.type === 'photo').length;
+            totalPhotosSpan.textContent = totalItems;
+            updateGalleryDisplay();
+        }
+        
+        // Отображение текущего элемента
+        function updateGalleryDisplay() {
+            const item = galleryItems[currentItemIndex];
+            galleryContent.innerHTML = '';
+            
+            // Обновляем счетчик только для фотографий
+            const photoIndex = galleryItems.slice(0, currentItemIndex + 1)
+                .filter(i => i.type === 'photo').length;
+            currentPhotoSpan.textContent = photoIndex;
+            
+            // Обновляем подсказку в зависимости от типа контента
+            if (item.type === 'question') {
+                showQuestion(item);
+                // Для вопросов скрываем навигацию
+                prevPhotoBtn.style.display = 'none';
+                nextPhotoBtn.style.display = 'none';
+                galleryHint.textContent = item.singleAnswer ? 
+                    'Нажми на кнопку, чтобы продолжить ❤️' : 
+                    'Выбери правильный ответ ❤️';
+            } else if (item.type === 'photo') {
+                showPhoto(item);
+                // Для фотографий показываем навигацию
+                prevPhotoBtn.style.display = 'flex';
+                nextPhotoBtn.style.display = 'flex';
+                galleryHint.textContent = 'Используй стрелки для навигации или нажимай на кнопки';
+            } else if (item.type === 'info') {
+                showInfo(item);
+                // Для финального слайда скрываем навигацию
+                prevPhotoBtn.style.display = 'flex';
+                nextPhotoBtn.style.display = 'none';
+                galleryHint.textContent = 'Это финальный слайд! Вернись на главный экран или посмотри фотографии ещё раз';
+            }
+        }
+        
+        // Показать вопрос
+        function showQuestion(questionData) {
+            let questionHTML = '';
+            
+            if (questionData.singleAnswer) {
+                // Только один вариант ответа (первый вопрос)
+                questionHTML = `
+                    <div class="question-container">
+                        <div class="question-text">${questionData.question}</div>
+                        <div class="answers-container">
+                            <button class="answer-btn correct single" data-answer="correct">
+                                ${questionData.correctAnswer}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Несколько вариантов (второй вопрос)
+                questionHTML = `
+                    <div class="question-container">
+                        <div class="question-text">${questionData.question}</div>
+                        <div class="answers-container">
+                            <button class="answer-btn correct" data-answer="correct" data-type="nod">
+                                ${questionData.correctAnswer}
+                            </button>
+                            <button class="answer-btn wrong" data-answer="wrong-1" data-type="shake">
+                                ${questionData.wrongAnswers[0]}
+                            </button>
+                            <button class="answer-btn wrong" data-answer="wrong-2" data-type="red">
+                                ${questionData.wrongAnswers[1]}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            galleryContent.innerHTML = questionHTML;
+            
+            // Добавляем обработчики для кнопок
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.addEventListener('click', handleAnswerClick);
+                
+                // Для второго вопроса добавляем особые обработчики наведения
+                const type = btn.dataset.type;
+                if (type === 'nod') {
+                    btn.addEventListener('mouseenter', handleNodHover);
+                    btn.addEventListener('mouseleave', handleNodLeave);
+                } else if (type === 'shake') {
+                    btn.addEventListener('mouseenter', handleShakeHover);
+                    btn.addEventListener('mouseleave', handleShakeLeave);
+                } else if (type === 'red') {
+                    btn.addEventListener('mouseenter', handleRedHover);
+                    btn.addEventListener('mouseleave', handleRedLeave);
+                }
+            });
+        }
+        
+        // Показать фотографию
+        function showPhoto(photoData) {
+            const photoHTML = `
+                <div class="photo-frame">
+                    <img class="photo-image" src="${photoData.image}" alt="Наше фото">
+                    <div class="photo-caption">
+                        <div class="caption-date">${photoData.date}</div>
+                        <div class="caption-text">${photoData.caption}</div>
+                    </div>
+                </div>
+            `;
+            
+            galleryContent.innerHTML = photoHTML;
+            
+            // Создаем сердечки при показе фото
+            createHeart(
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+                'gallery'
+            );
+        }
+        
+        // Показать информационное сообщение
+        function showInfo(infoData) {
+            const infoHTML = `
+                <div class="info-container">
+                    <span class="info-icon sparkle">${infoData.icon}</span>
+                    <h2 class="info-title">${infoData.title}</h2>
+                    <div class="info-text">
+                        ${infoData.text}<br><br>
+                        ${infoData.details}<br>
+                        <span class="info-highlight">${infoData.highlight}</span>
+                    </div>
+                    <div class="info-note">
+                        ${infoData.note}
+                    </div>
+                </div>
+            `;
+            
+            galleryContent.innerHTML = infoHTML;
+            
+            // Создаем праздничные сердечки
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    createHeart(
+                        Math.random() * window.innerWidth,
+                        window.innerHeight,
+                        'celebration'
+                    );
+                }, i * 200);
+            }
+        }
+        
+        // Обработка наведения на кнопку "Сильнее всех на свете" (кивание головой - вверх-вниз)
+        function handleNodHover(e) {
+            const btn = e.target;
+            btn.classList.add('head-nod');
+        }
+        
+        // Обработка отведения курсора от кнопки "Сильнее всех на свете"
+        function handleNodLeave(e) {
+            const btn = e.target;
+            btn.classList.remove('head-nod');
+        }
+        
+        // Обработка наведения на кнопку "Да" (качание головой влево-вправо - "нет")
+        function handleShakeHover(e) {
+            const btn = e.target;
+            btn.classList.add('head-shake');
+        }
+        
+        // Обработка отведения курсора от кнопки "Да"
+        function handleShakeLeave(e) {
+            const btn = e.target;
+            btn.classList.remove('head-shake');
+        }
+        
+        // Обработка наведения на кнопку "Нет" (становится красной)
+        function handleRedHover(e) {
+            const btn = e.target;
+            btn.classList.add('disabled-red');
+        }
+        
+        // Обработка отведения курсора от кнопки "Нет" (возвращается в исходное состояние)
+        function handleRedLeave(e) {
+            const btn = e.target;
+            btn.classList.remove('disabled-red');
+        }
+        
+        // Обработка клика по ответу
+        function handleAnswerClick(e) {
+            const btn = e.target;
+            
+            if (btn.classList.contains('correct')) {
+                // Правильный ответ
+                questionAnswered = true;
+                
+                // Праздничные эффекты
+                btn.style.transform = 'scale(1.2)';
+                btn.style.animation = 'pulse 0.5s infinite';
+                
+                // Создаем много сердечек
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        createHeart(
+                            Math.random() * window.innerWidth,
+                            Math.random() * window.innerHeight,
+                            'celebration'
+                        );
+                    }, i * 100);
+                }
+                
+                // Переходим к следующему элементу через 2 секунды
+                setTimeout(() => {
+                    if (currentItemIndex < galleryItems.length - 1) {
+                        currentItemIndex++;
+                        updateGalleryDisplay();
+                    }
+                }, 2000);
+                
+            } else if (btn.classList.contains('wrong')) {
+                // Неправильный ответ - ничего не происходит при клике
+                return;
+            }
+        }
+        
+        // Переключение на предыдущий элемент
+        function prevItem() {
+            if (currentItemIndex > 0) {
+                currentItemIndex--;
+                updateGalleryDisplay();
+            }
+        }
+        
+        // Переключение на следующий элемент
+        function nextItem() {
+            if (currentItemIndex < galleryItems.length - 1) {
+                // Для вопросов проверяем, был ли ответ
+                if (galleryItems[currentItemIndex].type === 'question' && !questionAnswered) {
+                    galleryHint.textContent = 'Сначала ответь на вопрос! ❤️';
+                    galleryHint.style.color = '#d4a5a5';
+                    galleryHint.style.animation = 'headNod 1s';
+                    setTimeout(() => {
+                        galleryHint.style.animation = '';
+                    }, 1000);
+                    return;
+                }
+                
+                currentItemIndex++;
+                questionAnswered = false;
+                updateGalleryDisplay();
+                
+                // Если это последний слайд, запускаем праздничные эффекты
+                if (currentItemIndex === galleryItems.length - 1) {
+                    // Много сердечек для финального слайда
+                    for (let i = 0; i < 20; i++) {
+                        setTimeout(() => {
+                            createHeart(
+                                Math.random() * window.innerWidth,
+                                Math.random() * window.innerHeight,
+                                'final'
+                            );
+                        }, i * 150);
+                    }
+                }
+            }
+        }
+        
+        // Переход к галерее
+        function goToGallery() {
+            mainScreen.style.display = 'none';
+            galleryScreen.classList.add('active');
+            document.body.style.background = 'linear-gradient(135deg, #f0f2f5 0%, #e1e5eb 100%)';
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createHeart(
+                        Math.random() * window.innerWidth,
+                        window.innerHeight,
+                        'transition'
+                    );
+                }, i * 200);
+            }
+        }
+        
+        // Возврат на главный экран
+        function goToMain() {
+            galleryScreen.classList.remove('active');
+            setTimeout(() => {
+                mainScreen.style.display = 'block';
+                document.body.style.background = 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)';
+                // Сбрасываем галерею
+                currentItemIndex = 0;
+                questionAnswered = false;
+                updateGalleryDisplay();
+            }, 300);
+        }
+        
+        // Навигация с помощью клавиатуры
+        function handleKeyDown(e) {
+            if (galleryScreen.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') {
+                    prevItem();
+                } else if (e.key === 'ArrowRight') {
+                    nextItem();
+                } else if (e.key === 'Escape') {
+                    goToMain();
+                }
+            }
+        }
+        
+        // Функция создания сердечка (только для кликов по экрану и праздничных событий)
+        function createHeart(x, y, type = 'click') {
             const heart = document.createElement('div');
+            heart.classList.add('heart');
             heart.innerHTML = '❤️';
-            heart.style.position = 'fixed';
-            heart.style.left = (x - 12) + 'px';
-            heart.style.top = (y - 12) + 'px';
-            heart.style.fontSize = '24px';
-            heart.style.color = '#e91e63';
-            heart.style.pointerEvents = 'none';
-            heart.style.zIndex = '10000';
-            heart.style.transition = 'all 1s ease-out';
+            
+            const colors = ['#d4a5a5', '#e6b8b8', '#c9ada7', '#d8c3a5', '#e2c2c6'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            const sizes = type === 'celebration' || type === 'final' ? [24, 28, 32, 36, 40] : [20, 24, 28, 32, 36];
+            const size = sizes[Math.floor(Math.random() * sizes.length)];
+            
+            heart.style.color = color;
+            heart.style.fontSize = `${size}px`;
+            heart.style.left = `${x - size/2}px`;
+            heart.style.top = `${y - size/2}px`;
+            
+            const angle = Math.random() * Math.PI * 2;
+            const distance = type === 'celebration' || type === 'final' ? 200 : 100 + Math.random() * 100;
+            const endX = Math.cos(angle) * distance;
+            const endY = -Math.abs(Math.sin(angle) * distance) - 50;
+            
+            heart.style.setProperty('--tx', `${endX}px`);
+            heart.style.setProperty('--ty', `${endY}px`);
+            heart.style.setProperty('--rot', `${(Math.random() - 0.5) * 360}deg`);
+            heart.style.animation = `floatUpRandom ${type === 'celebration' || type === 'final' ? 2 : 1.5}s ease-out forwards`;
             
             document.body.appendChild(heart);
             
-            // Анимация полета
-            const endX = x + (Math.random() * 200 - 100);
-            const endY = y - 150;
-            
             setTimeout(() => {
-                heart.style.transform = `translate(${endX - x}px, ${endY - y}px) rotate(${Math.random() * 360}deg)`;
-                heart.style.opacity = '0';
-            }, 10);
-            
-            // Удаляем через 1.2 секунды
-            setTimeout(() => {
-                heart.remove();
-            }, 1200);
+                if (heart.parentNode) {
+                    heart.parentNode.removeChild(heart);
+                }
+            }, type === 'celebration' || type === 'final' ? 2000 : 1500);
         }
         
-        // Создаем несколько сердечек при загрузке для красоты
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                for(let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        createFloatingHeart(
-                            Math.random() * window.innerWidth,
-                            window.innerHeight - 50
-                        );
-                    }, i * 200);
-                }
-            }, 500);
+        // Таймер до 14 февраля
+        function updateCountdown() {
+            const now = new Date();
+            let targetYear = now.getFullYear();
+            
+            const valentineThisYear = new Date(targetYear, 1, 14, 0, 0, 0);
+            if (now > valentineThisYear) {
+                targetYear++;
+            }
+            
+            const targetDate = new Date(targetYear, 1, 14, 0, 0, 0);
+            const timeLeft = targetDate - now;
+            
+            if (timeLeft < 0) {
+                document.getElementById('countdown').innerHTML = `
+                    <div style="font-size: 2em; color: #d4a5a5; padding: 40px;">
+                        С Днем Святого Валентина! ❤️
+                    </div>
+                `;
+                return;
+            }
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Обработчики событий
+        goToPhotosBtn.addEventListener('click', goToGallery);
+        closeGalleryBtn.addEventListener('click', goToMain);
+        prevPhotoBtn.addEventListener('click', prevItem);
+        nextPhotoBtn.addEventListener('click', nextItem);
+        document.addEventListener('keydown', handleKeyDown);
+        
+        // Клики для сердечек (только вне кнопок ответов)
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav-btn') && !e.target.closest('.photo-btn') && 
+                !e.target.closest('.close-gallery') && !e.target.closest('.answer-btn')) {
+                createHeart(e.clientX, e.clientY, 'click');
+            }
         });
+        
+        // Инициализация
+        initGallery();
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // Автоматические сердечки
+        setInterval(() => {
+            const x = Math.random() * window.innerWidth;
+            const y = window.innerHeight + 50;
+            createHeart(x, y, 'auto');
+        }, 30000);
     </script>
 </body>
 </html>
