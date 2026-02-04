@@ -1,11 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Романтический сюрприз</title>
+    <style>
+        /* Используем кастомное изображение сердечка */
+        * {
+            cursor: url('https://cdn-icons-png.flaticon.com/128/2107/2107845.png') 16 16, auto;
+        }
+        
+        /* Альтернатива: сердечко в формате SVG прямо в коде */
+        /* Раскомментируйте, если хотите использовать SVG вместо ссылки */
+        /*
+        * {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23e91e63' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E") 12 12, auto;
+        }
+        */
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: #fff5f8;
+            color: #5d3a5d;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .love-letter {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 700px;
+            box-shadow: 0 0 30px rgba(233, 30, 99, 0.1);
+            border: 1px solid #ffebee;
+            position: relative;
+        }
+        
+        .love-letter:before {
+            content: "❤";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0 20px;
+            font-size: 24px;
+            color: #e91e63;
+        }
+        
+        h1 {
+            color: #e91e63;
+            text-align: center;
+            border-bottom: 1px dashed #ffc1d6;
+            padding-bottom: 15px;
+        }
+        
+        .signature {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            color: #e91e63;
+            margin-top: 40px;
+        }
+        
+        .hint {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #a188a1;
+            text-align: center;
+        }
+    </style>
+    <!-- Подключаем красивый шрифт для подписи -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <p>Hello world</p>
+    <div class="love-letter">
+        <h1>Моему самому дорогому человеку</h1>
+        
+        <p>Дорогая,</p>
+        
+        <p>С каждым днем я понимаю все больше, как сильно мне повезло встретить тебя. Ты — не просто часть моей жизни, ты — самое лучшее в ней.</p>
+        
+        <p>Помнишь, как мы впервые встретились? Я тогда и не думал, что это случайное знакомство перерастет в самое настоящее чудо. Ты изменила мой мир, наполнила его красками, светом и теплом.</p>
+        
+        <p>Сейчас, когда я создаю этот сайт, я думаю о каждой нашей улыбке, каждом разговоре до утра, каждой совместной мечте. И мое сердце наполняется такой нежностью и благодарностью, что словами не передать.</p>
+        
+        <p>Я обещаю всегда быть рядом, поддерживать тебя в любых начинаниях, делать тебя счастливой каждую секунду и любить тебя сильнее с каждым днем.</p>
+        
+        <div class="signature">
+            С любовью,<br>
+            Навеки твой
+        </div>
+    </div>
+    
+    <div class="hint">
+        Попробуй кликнуть в любом месте страницы... ❤️
+    </div>
+
+    <script>
+        // Создаем летающие сердечки при клике
+        document.addEventListener('click', function(e) {
+            createFloatingHeart(e.clientX, e.clientY);
+        });
+        
+        function createFloatingHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = (x - 12) + 'px';
+            heart.style.top = (y - 12) + 'px';
+            heart.style.fontSize = '24px';
+            heart.style.color = '#e91e63';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '10000';
+            heart.style.transition = 'all 1s ease-out';
+            
+            document.body.appendChild(heart);
+            
+            // Анимация полета
+            const endX = x + (Math.random() * 200 - 100);
+            const endY = y - 150;
+            
+            setTimeout(() => {
+                heart.style.transform = `translate(${endX - x}px, ${endY - y}px) rotate(${Math.random() * 360}deg)`;
+                heart.style.opacity = '0';
+            }, 10);
+            
+            // Удаляем через 1.2 секунды
+            setTimeout(() => {
+                heart.remove();
+            }, 1200);
+        }
+        
+        // Создаем несколько сердечек при загрузке для красоты
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                for(let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        createFloatingHeart(
+                            Math.random() * window.innerWidth,
+                            window.innerHeight - 50
+                        );
+                    }, i * 200);
+                }
+            }, 500);
+        });
+    </script>
 </body>
 </html>
