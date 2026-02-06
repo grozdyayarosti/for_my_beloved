@@ -416,6 +416,8 @@
             min-height: 44px;
             -webkit-appearance: none;
             appearance: none;
+            position: relative;
+            z-index: 1;
         }
         
         .answer-btn.correct {
@@ -436,6 +438,36 @@
         .answer-btn:active:not(.disabled-red) {
             transform: translateY(2px);
             box-shadow: 0 3px 8px rgba(212, 165, 165, 0.25);
+        }
+        
+        /* Анимации для кнопок - упрощенные версии */
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes buttonNod {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        @keyframes buttonShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .button-nod {
+            animation: buttonNod 0.5s ease;
+        }
+        
+        .button-shake {
+            animation: buttonShake 0.5s ease;
+        }
+        
+        .button-red {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252) !important;
+            color: white !important;
         }
         
         /* Фотографии в галерее */
@@ -531,33 +563,7 @@
             padding-bottom: 30px;
         }
         
-        /* Анимации - оптимизируем для производительности */
-        @keyframes gentleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        
-        @keyframes headNod {
-            0% { transform: translateY(0); }
-            25% { transform: translateY(-6px); }
-            50% { transform: translateY(0); }
-            75% { transform: translateY(3px); }
-            100% { transform: translateY(0); }
-        }
-        
-        @keyframes headShake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            50% { transform: translateX(8px); }
-            75% { transform: translateX(-8px); }
-            100% { transform: translateX(0); }
-        }
-        
-        @keyframes titleFade {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
+        /* Анимации для сердечек */
         @keyframes heartFloat {
             0% {
                 transform: translate(0, 0) rotate(0deg) scale(1);
@@ -569,19 +575,16 @@
             }
         }
         
-        .head-nod {
-            animation: headNod 1s ease;
-        }
-        
-        .head-shake {
-            animation: headShake 0.8s ease;
-        }
-        
         .title-fade {
             animation: titleFade 0.5s ease forwards;
         }
         
-        /* Стили для сердечек - исправленная версия */
+        @keyframes titleFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Стили для сердечек */
         .heart {
             position: fixed;
             font-size: 24px;
@@ -986,7 +989,7 @@
             return photoTitles[photoCount] || "Наш особенный момент ❤️";
         }
         
-        // Показать вопрос
+        // Показать вопрос - УПРОЩЕННАЯ ВЕРСИЯ БЕЗ КОНФЛИКТУЮЩИХ ОБРАБОТЧИКОВ
         function showQuestion(questionData) {
             let questionHTML = '';
             
@@ -1022,48 +1025,28 @@
             
             galleryContent.innerHTML = questionHTML;
             
-            // Добавляем обработчики для кнопок - исправленная версия
+            // ОЧЕНЬ ПРОСТЫЕ ОБРАБОТЧИКИ БЕЗ КОНФЛИКТОВ
             document.querySelectorAll('.answer-btn').forEach(btn => {
-                // Для кликов на десктопе и тапов на мобильных
-                btn.addEventListener('click', handleAnswerClick);
+                // Только один обработчик клика для всех кнопок
+                btn.addEventListener('click', function(e) {
+                    handleAnswerClick(e);
+                });
                 
-                // Для наведения/касания - отдельные обработчики
-                const type = btn.dataset.type;
-                if (type === 'nod') {
-                    btn.addEventListener('mouseenter', handleNodHover);
-                    btn.addEventListener('mouseleave', handleNodLeave);
-                    // Для мобильных - touch события
-                    btn.addEventListener('touchstart', function(e) {
-                        handleNodHover(e);
-                        e.preventDefault();
-                    });
-                    btn.addEventListener('touchend', function(e) {
-                        handleNodLeave(e);
-                        e.preventDefault();
-                    });
-                } else if (type === 'shake') {
-                    btn.addEventListener('mouseenter', handleShakeHover);
-                    btn.addEventListener('mouseleave', handleShakeLeave);
-                    btn.addEventListener('touchstart', function(e) {
-                        handleShakeHover(e);
-                        e.preventDefault();
-                    });
-                    btn.addEventListener('touchend', function(e) {
-                        handleShakeLeave(e);
-                        e.preventDefault();
-                    });
-                } else if (type === 'red') {
-                    btn.addEventListener('mouseenter', handleRedHover);
-                    btn.addEventListener('mouseleave', handleRedLeave);
-                    btn.addEventListener('touchstart', function(e) {
-                        handleRedHover(e);
-                        e.preventDefault();
-                    });
-                    btn.addEventListener('touchend', function(e) {
-                        handleRedLeave(e);
-                        e.preventDefault();
-                    });
-                }
+                // Для мобильных - touchstart тоже вызывает click
+                btn.addEventListener('touchstart', function(e) {
+                    // Просто запускаем анимацию при касании, но не мешаем клику
+                    const type = btn.dataset.type;
+                    if (type === 'nod') {
+                        btn.classList.add('button-nod');
+                        setTimeout(() => btn.classList.remove('button-nod'), 500);
+                    } else if (type === 'shake') {
+                        btn.classList.add('button-shake');
+                        setTimeout(() => btn.classList.remove('button-shake'), 500);
+                    } else if (type === 'red') {
+                        btn.classList.add('button-red');
+                        setTimeout(() => btn.classList.remove('button-red'), 500);
+                    }
+                }, { passive: true });
             });
         }
         
@@ -1112,70 +1095,52 @@
             }
         }
         
-        // Обработка наведения для кнопок
-        function handleNodHover(e) {
-            const btn = e.target;
-            btn.classList.add('head-nod');
-        }
-        
-        function handleNodLeave(e) {
-            const btn = e.target;
-            btn.classList.remove('head-nod');
-        }
-        
-        function handleShakeHover(e) {
-            const btn = e.target;
-            btn.classList.add('head-shake');
-        }
-        
-        function handleShakeLeave(e) {
-            const btn = e.target;
-            btn.classList.remove('head-shake');
-        }
-        
-        function handleRedHover(e) {
-            const btn = e.target;
-            btn.classList.add('disabled-red');
-        }
-        
-        function handleRedLeave(e) {
-            const btn = e.target;
-            btn.classList.remove('disabled-red');
-        }
-        
-        // Обработка клика по ответу - ИСПРАВЛЕННАЯ ВЕРСИЯ
+        // Обработка клика по ответу - УПРОЩЕННАЯ И РАБОЧАЯ ВЕРСИЯ
         function handleAnswerClick(e) {
-            e.preventDefault();
-            e.stopPropagation();
+            console.log('Кнопка нажата!'); // Для отладки
             
             const btn = e.target;
             
             if (btn.classList.contains('correct')) {
+                console.log('Правильный ответ!');
+                
                 // Правильный ответ
                 questionAnswered = true;
                 
-                // Праздничные эффекты
-                btn.style.transform = 'scale(1.1)';
-                btn.style.animation = 'headNod 0.5s ease';
+                // Визуальный эффект
+                btn.style.transform = 'scale(1.05)';
+                btn.classList.add('button-nod');
                 
                 // Создаем много сердечек
-                for (let i = 0; i < 8; i++) {
+                for (let i = 0; i < 10; i++) {
                     setTimeout(() => {
                         createHeart(
                             Math.random() * window.innerWidth,
                             Math.random() * window.innerHeight,
                             'celebration'
                         );
-                    }, i * 200);
+                    }, i * 150);
                 }
                 
-                // Переходим к следующему элементу через 1.5 секунды
+                // Переходим к следующему элементу через 1 секунду
                 setTimeout(() => {
                     if (currentItemIndex < galleryItems.length - 1) {
                         currentItemIndex++;
                         updateGalleryDisplay();
                     }
-                }, 1500);
+                }, 1000);
+                
+            } else if (btn.classList.contains('wrong')) {
+                console.log('Неправильный ответ');
+                // Для неправильных ответов просто анимация без перехода
+                const type = btn.dataset.type;
+                if (type === 'shake') {
+                    btn.classList.add('button-shake');
+                    setTimeout(() => btn.classList.remove('button-shake'), 500);
+                } else if (type === 'red') {
+                    btn.classList.add('button-red');
+                    setTimeout(() => btn.classList.remove('button-red'), 500);
+                }
             }
         }
         
@@ -1240,7 +1205,7 @@
             updateGalleryDisplay();
         }
         
-        // Функция создания сердечка - ИСПРАВЛЕННАЯ ВЕРСИЯ
+        // Функция создания сердечка
         function createHeart(x, y, type = 'click') {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -1342,7 +1307,7 @@
         document.addEventListener('touchstart', handleTouchStart, {passive: true});
         document.addEventListener('touchend', handleTouchEnd, {passive: true});
         
-        // Клики для сердечек - ИСПРАВЛЕННАЯ ВЕРСИЯ
+        // Клики для сердечек
         document.addEventListener('click', function(e) {
             // Проверяем, что клик не по интерактивным элементам
             if (!e.target.closest('.nav-btn') && 
