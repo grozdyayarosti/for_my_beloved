@@ -558,6 +558,17 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        @keyframes heartFloat {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3);
+                opacity: 0;
+            }
+        }
+        
         .head-nod {
             animation: headNod 1s ease;
         }
@@ -570,15 +581,14 @@
             animation: titleFade 0.5s ease forwards;
         }
         
-        /* Стили для сердечек - меньше и быстрее для мобильных */
+        /* Стили для сердечек - исправленная версия */
         .heart {
             position: fixed;
-            font-size: 20px;
+            font-size: 24px;
             pointer-events: none;
             z-index: 9999;
             user-select: none;
             filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
-            will-change: transform, opacity;
         }
         
         /* Медиа-запросы для очень маленьких экранов */
@@ -784,7 +794,7 @@
             // Фотографии с уникальными заголовками
             {
                 type: 'photo',
-                image: "photos/photo1.png",
+                image: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 date: "Наша первая встреча",
                 caption: "Помнишь этот день? Я был так взволнован, что почти забыл, как говорить. А ты улыбалась так, что у меня перехватило дыхание.",
                 title: "Момент, когда всё изменилось ✨",
@@ -792,7 +802,7 @@
             },
             {
                 type: 'photo',
-                image: "photos/photo2.png",
+                image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 date: "Первое совместное путешествие",
                 caption: "Этот закат мы наблюдали вместе, держась за руки. В тот момент я понял, что хочу видеть все закаты мира только с тобой.",
                 title: "Закат, который соединил нас навсегда 🌅",
@@ -800,7 +810,7 @@
             },
             {
                 type: 'photo',
-                image: "photos/photo3.png",
+                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 date: "Твой самый красивый день",
                 caption: "Ты всегда прекрасна, но в этот день ты сияла так, что затмевала всё вокруг. Я счастлив, что могу видеть твою улыбку каждый день.",
                 title: "Сияние, от которого светлеет мир 💫",
@@ -819,7 +829,7 @@
             // Остальные фотографии с уникальными заголовками
             {
                 type: 'photo',
-                image: "photos/photo4.png",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 date: "Наши смешные моменты",
                 caption: "Мы можем смеяться над чем угодно, и это самое ценное. С тобой даже обычные дни превращаются в приключения.",
                 title: "Смех, который лечит душу 😂",
@@ -827,7 +837,7 @@
             },
             {
                 type: 'photo',
-                image: "photos/photo5.png",
+                image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 date: "Тихое утро вместе",
                 caption: "Эти утренние моменты, когда мы просто пьём кофе и молча смотрим в окно, для меня дороже любых слов.",
                 title: "Тишина, которая говорит больше слов 🤫",
@@ -835,23 +845,7 @@
             },
             {
                 type: 'photo',
-                image: "photos/photo6.png",
-                date: "Твои задумчивые моменты",
-                caption: "Я люблю наблюдать, как ты о чём-то думаешь. В твоих глазах целые вселенные, и я благодарен, что могу в них смотреть.",
-                title: "Вселенная в твоих глазах 🌌",
-                titleSize: 'large'
-            },
-            {
-                type: 'photo',
-                image: "photos/photo7.png",
-                date: "Твои задумчивые моменты",
-                caption: "Я люблю наблюдать, как ты о чём-то думаешь. В твоих глазах целые вселенные, и я благодарен, что могу в них смотреть.",
-                title: "Вселенная в твоих глазах 🌌",
-                titleSize: 'large'
-            },
-            {
-                type: 'photo',
-                image: "photos/photo8.png",
+                image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 date: "Твои задумчивые моменты",
                 caption: "Я люблю наблюдать, как ты о чём-то думаешь. В твоих глазах целые вселенные, и я благодарен, что могу в них смотреть.",
                 title: "Вселенная в твоих глазах 🌌",
@@ -888,19 +882,6 @@
         const currentPhotoSpan = document.getElementById('current-photo');
         const totalPhotosSpan = document.getElementById('total-photos');
         const galleryHint = document.getElementById('gallery-hint');
-        
-        // Уникальные заголовки для каждого типа контента
-        const titleTemplates = {
-            question1: "Секрет моего сердца 💝",
-            question2: "Проверка чувств ❤️‍🔥",
-            photo1: "Момент, когда всё изменилось ✨",
-            photo2: "Закат, который соединил нас навсегда 🌅",
-            photo3: "Сияние, от которого светлеет мир 💫",
-            photo4: "Смех, который лечит душу 😂",
-            photo5: "Тишина, которая говорит больше слов 🤫",
-            photo6: "Вселенная в твоих глазах 🌌",
-            info: "Сюрприз, который запомнится навсегда! 🎠"
-        };
         
         // Инициализация галереи
         function initGallery() {
@@ -1041,19 +1022,47 @@
             
             galleryContent.innerHTML = questionHTML;
             
-            // Добавляем обработчики для кнопок
+            // Добавляем обработчики для кнопок - исправленная версия
             document.querySelectorAll('.answer-btn').forEach(btn => {
+                // Для кликов на десктопе и тапов на мобильных
                 btn.addEventListener('click', handleAnswerClick);
+                
+                // Для наведения/касания - отдельные обработчики
                 const type = btn.dataset.type;
                 if (type === 'nod') {
-                    btn.addEventListener('touchstart', handleNodTouch);
-                    btn.addEventListener('touchend', handleNodLeave);
+                    btn.addEventListener('mouseenter', handleNodHover);
+                    btn.addEventListener('mouseleave', handleNodLeave);
+                    // Для мобильных - touch события
+                    btn.addEventListener('touchstart', function(e) {
+                        handleNodHover(e);
+                        e.preventDefault();
+                    });
+                    btn.addEventListener('touchend', function(e) {
+                        handleNodLeave(e);
+                        e.preventDefault();
+                    });
                 } else if (type === 'shake') {
-                    btn.addEventListener('touchstart', handleShakeTouch);
-                    btn.addEventListener('touchend', handleShakeLeave);
+                    btn.addEventListener('mouseenter', handleShakeHover);
+                    btn.addEventListener('mouseleave', handleShakeLeave);
+                    btn.addEventListener('touchstart', function(e) {
+                        handleShakeHover(e);
+                        e.preventDefault();
+                    });
+                    btn.addEventListener('touchend', function(e) {
+                        handleShakeLeave(e);
+                        e.preventDefault();
+                    });
                 } else if (type === 'red') {
-                    btn.addEventListener('touchstart', handleRedTouch);
-                    btn.addEventListener('touchend', handleRedLeave);
+                    btn.addEventListener('mouseenter', handleRedHover);
+                    btn.addEventListener('mouseleave', handleRedLeave);
+                    btn.addEventListener('touchstart', function(e) {
+                        handleRedHover(e);
+                        e.preventDefault();
+                    });
+                    btn.addEventListener('touchend', function(e) {
+                        handleRedLeave(e);
+                        e.preventDefault();
+                    });
                 }
             });
         }
@@ -1103,42 +1112,53 @@
             }
         }
         
-        // Обработка касаний для кнопок
-        function handleNodTouch(e) {
-            e.target.classList.add('head-nod');
-            e.preventDefault();
+        // Обработка наведения для кнопок
+        function handleNodHover(e) {
+            const btn = e.target;
+            btn.classList.add('head-nod');
         }
         
         function handleNodLeave(e) {
-            e.target.classList.remove('head-nod');
+            const btn = e.target;
+            btn.classList.remove('head-nod');
         }
         
-        function handleShakeTouch(e) {
-            e.target.classList.add('head-shake');
-            e.preventDefault();
+        function handleShakeHover(e) {
+            const btn = e.target;
+            btn.classList.add('head-shake');
         }
         
         function handleShakeLeave(e) {
-            e.target.classList.remove('head-shake');
+            const btn = e.target;
+            btn.classList.remove('head-shake');
         }
         
-        function handleRedTouch(e) {
-            e.target.classList.add('disabled-red');
-            e.preventDefault();
+        function handleRedHover(e) {
+            const btn = e.target;
+            btn.classList.add('disabled-red');
         }
         
         function handleRedLeave(e) {
-            e.target.classList.remove('disabled-red');
+            const btn = e.target;
+            btn.classList.remove('disabled-red');
         }
         
-        // Обработка клика по ответу
+        // Обработка клика по ответу - ИСПРАВЛЕННАЯ ВЕРСИЯ
         function handleAnswerClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             const btn = e.target;
             
             if (btn.classList.contains('correct')) {
+                // Правильный ответ
                 questionAnswered = true;
-                btn.style.transform = 'scale(1.1)';
                 
+                // Праздничные эффекты
+                btn.style.transform = 'scale(1.1)';
+                btn.style.animation = 'headNod 0.5s ease';
+                
+                // Создаем много сердечек
                 for (let i = 0; i < 8; i++) {
                     setTimeout(() => {
                         createHeart(
@@ -1149,6 +1169,7 @@
                     }, i * 200);
                 }
                 
+                // Переходим к следующему элементу через 1.5 секунды
                 setTimeout(() => {
                     if (currentItemIndex < galleryItems.length - 1) {
                         currentItemIndex++;
@@ -1219,7 +1240,7 @@
             updateGalleryDisplay();
         }
         
-        // Функция создания сердечка
+        // Функция создания сердечка - ИСПРАВЛЕННАЯ ВЕРСИЯ
         function createHeart(x, y, type = 'click') {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -1227,37 +1248,38 @@
             
             const colors = ['#d4a5a5', '#e6b8b8', '#c9ada7'];
             const color = colors[Math.floor(Math.random() * colors.length)];
-            const size = type === 'celebration' || type === 'final' ? 22 : 18;
+            const size = type === 'celebration' || type === 'final' ? 28 : 24;
             
             heart.style.color = color;
             heart.style.fontSize = `${size}px`;
-            heart.style.left = `${x - size/2}px`;
-            heart.style.top = `${y - size/2}px`;
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+            heart.style.position = 'fixed';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '9999';
             
+            // Случайное направление полета
             const angle = Math.random() * Math.PI * 2;
-            const distance = 80 + Math.random() * 80;
+            const distance = 100 + Math.random() * 100;
             const endX = Math.cos(angle) * distance;
-            const endY = -Math.abs(Math.sin(angle) * distance) - 30;
+            const endY = -Math.abs(Math.sin(angle) * distance) - 50;
             
-            heart.style.transform = `translate(${endX}px, ${endY}px) rotate(${(Math.random() - 0.5) * 180}deg)`;
-            heart.style.opacity = '0';
-            heart.style.transition = 'all 1s ease-out';
+            // Устанавливаем CSS переменные для анимации
+            heart.style.setProperty('--tx', `${endX}px`);
+            heart.style.setProperty('--ty', `${endY}px`);
+            heart.style.setProperty('--rot', `${(Math.random() - 0.5) * 360}deg`);
             
             document.body.appendChild(heart);
             
-            requestAnimationFrame(() => {
-                heart.style.transform = 'translate(0, 0) rotate(0deg)';
-                heart.style.opacity = '1';
-            });
+            // Запускаем анимацию
+            heart.style.animation = `heartFloat ${type === 'celebration' || type === 'final' ? 1.5 : 1}s ease-out forwards`;
             
+            // Удаляем через время
             setTimeout(() => {
-                heart.style.transform = `translate(${endX}px, ${endY}px) rotate(${(Math.random() - 0.5) * 180}deg)`;
-                heart.style.opacity = '0';
-            }, 10);
-            
-            setTimeout(() => {
-                if (heart.parentNode) heart.parentNode.removeChild(heart);
-            }, 1100);
+                if (heart.parentNode) {
+                    heart.parentNode.removeChild(heart);
+                }
+            }, (type === 'celebration' || type === 'final' ? 1500 : 1000));
         }
         
         // Таймер до 14 февраля
@@ -1320,32 +1342,45 @@
         document.addEventListener('touchstart', handleTouchStart, {passive: true});
         document.addEventListener('touchend', handleTouchEnd, {passive: true});
         
-        // Клики для сердечек
+        // Клики для сердечек - ИСПРАВЛЕННАЯ ВЕРСИЯ
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.nav-btn') && !e.target.closest('.photo-btn') && 
-                !e.target.closest('.close-gallery') && !e.target.closest('.answer-btn')) {
-                createHeart(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY, 'click');
+            // Проверяем, что клик не по интерактивным элементам
+            if (!e.target.closest('.nav-btn') && 
+                !e.target.closest('.photo-btn') && 
+                !e.target.closest('.close-gallery') && 
+                !e.target.closest('.answer-btn') &&
+                !e.target.closest('#gallery-content .answer-btn')) {
+                
+                createHeart(e.clientX, e.clientY, 'click');
             }
         });
         
-        // Предотвращаем стандартное поведение касаний
-        document.addEventListener('touchmove', function(e) {
-            if (e.target.tagName === 'BUTTON') {
-                e.preventDefault();
+        // Также обрабатываем тапы на мобильных
+        document.addEventListener('touchstart', function(e) {
+            // Проверяем, что тап не по интерактивным элементам
+            const target = e.target;
+            if (!target.closest('.nav-btn') && 
+                !target.closest('.photo-btn') && 
+                !target.closest('.close-gallery') && 
+                !target.closest('.answer-btn') &&
+                !target.closest('#gallery-content .answer-btn')) {
+                
+                const touch = e.touches[0];
+                createHeart(touch.clientX, touch.clientY, 'click');
             }
-        }, { passive: false });
+        }, { passive: true });
         
         // Инициализация
         initGallery();
         updateCountdown();
         setInterval(updateCountdown, 1000);
         
-        // Автоматические сердечки каждые 45 секунд
+        // Автоматические сердечки каждые 30 секунд
         setInterval(() => {
             const x = Math.random() * window.innerWidth;
             const y = window.innerHeight + 30;
             createHeart(x, y, 'auto');
-        }, 45000);
+        }, 30000);
         
         // Предотвращаем масштабирование при двойном тапе на iOS
         let lastTouchEnd = 0;
@@ -1356,6 +1391,19 @@
             }
             lastTouchEnd = now;
         }, false);
+        
+        // Автоматические сердечки при загрузке
+        window.addEventListener('load', function() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createHeart(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight,
+                        'welcome'
+                    );
+                }, i * 500);
+            }
+        });
     </script>
 </body>
 </html>
