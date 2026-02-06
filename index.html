@@ -2,135 +2,294 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для моей любимой | Наши моменты</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Для моей любимой ❤️</title>
+    
+    <!-- Яблочные мета-теги для iPhone -->
+    <meta name="apple-mobile-web-app-title" content="Для любимой">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#f8f9fa">
+    
     <style>
+        /* Сброс стилей для мобильных */
         * {
             cursor: default;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
         
-        body {
-            font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
+        html, body {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #495057;
+            position: fixed; /* Фиксируем чтобы не было скролла на iOS */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        
+        /* Безопасные зоны для iPhone X и новее */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+        
+        /* Контейнер для всего контента */
+        .page-wrapper {
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #495057;
-            position: relative;
-            overflow: hidden;
-            transition: background 0.5s ease;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
         }
         
-        /* Абстрактный фон с геометрическими фигурами */
+        /* Абстрактный фон с геометрическими фигурами - упрощаем для мобильных */
         .bg-shapes {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
             z-index: -1;
+            pointer-events: none;
         }
         
         .bg-shape {
             position: absolute;
             border-radius: 50%;
-            background: linear-gradient(45deg, rgba(212, 165, 165, 0.05), rgba(169, 169, 169, 0.05));
-            filter: blur(40px);
+            background: linear-gradient(45deg, rgba(212, 165, 165, 0.03), rgba(169, 169, 169, 0.03));
+            filter: blur(30px);
         }
         
         .bg-shape:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: 10%;
-            left: 5%;
-            background: linear-gradient(45deg, rgba(212, 165, 165, 0.08), rgba(169, 169, 169, 0.05));
+            width: 200px;
+            height: 200px;
+            top: 5%;
+            left: -50px;
         }
         
         .bg-shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            bottom: 15%;
-            right: 10%;
-            background: linear-gradient(45deg, rgba(169, 169, 169, 0.05), rgba(212, 165, 165, 0.08));
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            right: -30px;
         }
         
         /* Основной контейнер */
         .container {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px 20px;
             box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.05),
+                0 10px 25px rgba(0, 0, 0, 0.05),
                 0 1px 3px rgba(0, 0, 0, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            max-width: 900px;
-            width: 90%;
+            width: 92%;
+            max-width: 400px; /* Оптимальная ширина для мобильных */
             text-align: center;
             position: relative;
             overflow: hidden;
-            transition: all 0.5s ease;
+            margin: 0 auto;
+            animation: gentleFloat 6s ease-in-out infinite;
         }
         
-        /* Галерея - скрыта по умолчанию */
+        /* Заголовок - оптимизируем для маленьких экранов */
+        .title {
+            font-size: 2.2em;
+            font-weight: 300;
+            color: #6d6875;
+            margin-bottom: 30px;
+            letter-spacing: -0.3px;
+            position: relative;
+            display: inline-block;
+            line-height: 1.2;
+        }
+        
+        .title:after {
+            content: "❤";
+            font-size: 0.6em;
+            color: #d4a5a5;
+            position: absolute;
+            top: -10px;
+            right: -25px;
+            opacity: 0.8;
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+        
+        /* Стили таймера - компактнее для мобильных */
+        .countdown-title {
+            font-size: 0.95em;
+            color: #8a817c;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+        
+        #countdown {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .countdown-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px 8px;
+            flex: 1;
+            min-width: 0; /* Для правильного flex-box */
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.04),
+                0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+        
+        .countdown-item:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #d4a5a5, #c9ada7);
+            border-radius: 12px 12px 0 0;
+            opacity: 0.7;
+        }
+        
+        .countdown-number {
+            font-size: 1.8em;
+            font-weight: 300;
+            color: #6d6875;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+            display: block;
+        }
+        
+        .countdown-label {
+            font-size: 0.75em;
+            color: #8a817c;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            display: block;
+        }
+        
+        .target-date {
+            font-size: 1em;
+            color: #8a817c;
+            padding: 12px 20px;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 50px;
+            display: inline-block;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 400;
+            margin-top: 15px;
+        }
+        
+        .target-date strong {
+            color: #6d6875;
+            font-weight: 500;
+        }
+        
+        /* Кнопка перехода к фоткам - адаптируем для касаний */
+        .photo-btn {
+            background: linear-gradient(135deg, #d4a5a5, #c9ada7);
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 25px 0 35px;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 20px rgba(212, 165, 165, 0.3);
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px; /* Минимальная высота для касаний на iOS */
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .photo-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 10px rgba(212, 165, 165, 0.3);
+        }
+        
+        .photo-icon {
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+        
+        .hint {
+            margin-top: 25px;
+            font-size: 0.85em;
+            color: #adb5bd;
+            font-style: italic;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+        
+        .hint:before {
+            content: "💡";
+            margin-right: 6px;
+            opacity: 0.7;
+        }
+        
+        /* Галерея - адаптация для мобильных */
         .gallery-container {
             display: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #f8f9fa;
+            z-index: 1000;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
         
         .gallery-container.active {
             display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Кнопка навигации */
-        .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #6d6875;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-        
-        .nav-btn:hover {
-            background: white;
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            color: #d4a5a5;
-        }
-        
-        .nav-btn.prev {
-            left: 20px;
-        }
-        
-        .nav-btn.next {
-            right: 20px;
         }
         
         .close-gallery {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
+            position: fixed;
+            top: calc(15px + env(safe-area-inset-top));
+            right: calc(15px + env(safe-area-inset-right));
+            background: rgba(255, 255, 255, 0.9);
             border: none;
-            font-size: 28px;
+            font-size: 24px;
             color: #8a817c;
             cursor: pointer;
             width: 40px;
@@ -140,439 +299,263 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            z-index: 100;
+            z-index: 1001;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            -webkit-appearance: none;
+            appearance: none;
         }
         
-        .close-gallery:hover {
-            background: rgba(0, 0, 0, 0.05);
-            color: #6d6875;
-            transform: rotate(90deg);
-        }
-        
-        /* Тонкая декоративная линия сверху */
-        .container:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 20%;
-            right: 20%;
-            height: 1px;
-            background: linear-gradient(to right, 
-                transparent, 
-                rgba(212, 165, 165, 0.5), 
-                transparent);
-        }
-        
-        /* Заголовок */
-        .title {
-            font-size: 3.2em;
+        /* Уникальные заголовки для каждой фотографии */
+        .photo-title {
+            font-size: 1.8em;
             font-weight: 300;
             color: #6d6875;
-            margin-bottom: 40px;
-            letter-spacing: -0.5px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .title:after {
-            content: "❤";
-            font-size: 0.7em;
-            color: #d4a5a5;
-            position: absolute;
-            top: -15px;
-            right: -30px;
-            opacity: 0.8;
-            animation: gentleFloat 3s ease-in-out infinite;
-        }
-        
-        /* Кнопка перехода к фоткам */
-        .photo-btn {
-            background: linear-gradient(135deg, #d4a5a5, #c9ada7);
-            color: white;
-            border: none;
-            padding: 18px 45px;
-            font-size: 1.1em;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 30px 0 50px;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(212, 165, 165, 0.3);
-            letter-spacing: 1px;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .photo-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(212, 165, 165, 0.4);
-            letter-spacing: 2px;
-        }
-        
-        .photo-btn:active {
-            transform: translateY(-2px);
-        }
-        
-        .photo-btn:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: 0.5s;
-        }
-        
-        .photo-btn:hover:before {
-            left: 100%;
-        }
-        
-        .photo-icon {
-            margin-right: 12px;
-            font-size: 1.2em;
-            vertical-align: middle;
-        }
-        
-        /* Стили таймера */
-        .countdown-title {
-            font-size: 1.1em;
-            color: #8a817c;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 400;
-        }
-        
-        #countdown {
+            margin: 60px 20px 20px;
+            text-align: center;
+            line-height: 1.3;
+            min-height: 2.2em;
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 25px;
-            margin-bottom: 40px;
+            transition: opacity 0.3s ease;
+            padding: 0 10px;
         }
         
-        .countdown-item {
-            background: white;
-            border-radius: 16px;
-            padding: 25px 15px;
-            min-width: 130px;
-            box-shadow: 
-                0 10px 20px rgba(0, 0, 0, 0.04),
-                0 2px 6px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            position: relative;
+        .photo-title.small {
+            font-size: 1.6em;
         }
         
-        .countdown-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 
-                0 20px 30px rgba(0, 0, 0, 0.07),
-                0 3px 8px rgba(0, 0, 0, 0.08);
-            border-color: rgba(212, 165, 165, 0.2);
-        }
-        
-        .countdown-item:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(to right, #d4a5a5, #c9ada7);
-            border-radius: 16px 16px 0 0;
-            opacity: 0.7;
-        }
-        
-        .countdown-number {
-            font-size: 3.5em;
-            font-weight: 300;
-            color: #6d6875;
-            line-height: 1;
-            font-variant-numeric: tabular-nums;
-            font-feature-settings: "tnum";
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .countdown-label {
-            font-size: 0.9em;
-            color: #8a817c;
-            margin-top: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 500;
-        }
-        
-        .target-date {
-            font-size: 1.2em;
-            color: #8a817c;
-            padding: 15px 25px;
-            background: rgba(248, 249, 250, 0.8);
-            border-radius: 50px;
-            display: inline-block;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            font-weight: 400;
-            margin-top: 20px;
-        }
-        
-        .target-date strong {
-            color: #6d6875;
-            font-weight: 500;
-        }
-        
-        /* Галерея */
-        .gallery-title {
-            font-size: 2.5em;
-            font-weight: 300;
-            color: #6d6875;
-            margin-bottom: 40px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .gallery-title:after {
-            content: "";
-            position: absolute;
-            bottom: -10px;
-            left: 25%;
-            right: 25%;
-            height: 2px;
-            background: linear-gradient(to right, transparent, #d4a5a5, transparent);
+        .photo-title.large {
+            font-size: 2em;
         }
         
         .photo-counter {
             color: #8a817c;
-            margin-bottom: 30px;
-            font-size: 0.95em;
+            margin: 0 20px 20px;
+            font-size: 0.9em;
+            text-align: center;
         }
         
+        /* Навигационные кнопки для мобильных - больше и удобнее для касаний */
+        .nav-btn {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #6d6875;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 100;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .nav-btn.prev {
+            left: 15px;
+        }
+        
+        .nav-btn.next {
+            right: 15px;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        /* Контейнер для контента галереи */
+        #gallery-content {
+            padding: 0 20px 80px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Вопросы - адаптация для мобильных */
         .question-container {
             background: white;
-            border-radius: 20px;
-            padding: 60px 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            margin: 0 auto 30px;
-            max-width: 700px;
-            position: relative;
-            animation: fadeIn 0.8s ease;
+            border-radius: 16px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin: 20px 0;
         }
         
         .question-text {
-            font-size: 2em;
+            font-size: 1.5em;
             color: #6d6875;
-            margin-bottom: 50px;
-            line-height: 1.4;
+            margin-bottom: 30px;
+            line-height: 1.3;
             font-weight: 300;
         }
         
         .answers-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
         
         .answer-btn {
             background: linear-gradient(135deg, #d4a5a5, #c9ada7);
             color: white;
             border: none;
-            padding: 18px 35px;
-            font-size: 1.1em;
+            padding: 16px 20px;
+            font-size: 1em;
             border-radius: 50px;
             cursor: pointer;
-            margin: 10px 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(212, 165, 165, 0.25);
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 15px rgba(212, 165, 165, 0.25);
             font-weight: 500;
-            min-width: 250px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .answer-btn.single {
-            min-width: 200px;
-            margin-top: 20px;
+            width: 100%;
+            min-height: 44px;
+            -webkit-appearance: none;
+            appearance: none;
         }
         
         .answer-btn.correct {
             background: linear-gradient(135deg, #a5d4b0, #94c9a1);
-            box-shadow: 0 8px 20px rgba(165, 212, 176, 0.25);
         }
         
         .answer-btn.wrong {
             background: linear-gradient(135deg, #e0e0e0, #d0d0d0);
             color: #a0a0a0;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-            position: relative;
         }
         
         .answer-btn.disabled-red {
             background: linear-gradient(135deg, #ff6b6b, #ff5252) !important;
             color: white !important;
             cursor: not-allowed !important;
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.25) !important;
         }
         
-        .answer-btn:hover:not(.disabled-red) {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(212, 165, 165, 0.35);
+        .answer-btn:active:not(.disabled-red) {
+            transform: translateY(2px);
+            box-shadow: 0 3px 8px rgba(212, 165, 165, 0.25);
         }
         
-        .answer-btn.correct:hover {
-            box-shadow: 0 15px 30px rgba(165, 212, 176, 0.35);
-        }
-        
+        /* Фотографии в галерее */
         .photo-frame {
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            margin: 0 auto 30px;
-            max-width: 700px;
-            position: relative;
-            animation: fadeIn 0.8s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin: 20px 0;
         }
         
         .photo-image {
             width: 100%;
-            height: 400px;
+            height: 280px;
             object-fit: cover;
             display: block;
-            transition: transform 0.5s ease;
         }
         
         .photo-caption {
-            padding: 25px;
-            background: white;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 20px;
         }
         
         .caption-date {
             color: #d4a5a5;
-            font-size: 0.9em;
-            margin-bottom: 10px;
+            font-size: 0.85em;
+            margin-bottom: 8px;
             font-weight: 500;
-            letter-spacing: 1px;
         }
         
         .caption-text {
             color: #6d6875;
-            font-size: 1.2em;
-            line-height: 1.6;
+            font-size: 1.1em;
+            line-height: 1.5;
             font-style: italic;
         }
         
         /* Информационный слайд */
         .info-container {
             background: white;
-            border-radius: 20px;
-            padding: 60px 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            margin: 0 auto 30px;
-            max-width: 700px;
-            position: relative;
-            animation: fadeIn 0.8s ease;
+            border-radius: 16px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin: 20px 0;
             text-align: center;
         }
         
         .info-icon {
-            font-size: 4em;
-            margin-bottom: 30px;
+            font-size: 3em;
+            margin-bottom: 20px;
             display: block;
             animation: gentleFloat 3s ease-in-out infinite;
             color: #d4a5a5;
         }
         
         .info-title {
-            font-size: 2.5em;
+            font-size: 1.8em;
             color: #6d6875;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-weight: 300;
             line-height: 1.3;
         }
         
         .info-text {
-            font-size: 1.4em;
+            font-size: 1.2em;
             color: #8a817c;
-            line-height: 1.8;
-            margin-bottom: 30px;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
         
         .info-highlight {
             color: #d4a5a5;
             font-weight: 500;
             font-size: 1.1em;
+            display: block;
+            margin: 15px 0;
         }
         
         .info-note {
-            font-size: 1em;
+            font-size: 0.95em;
             color: #adb5bd;
             font-style: italic;
-            margin-top: 40px;
-            padding-top: 20px;
+            margin-top: 30px;
+            padding-top: 15px;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
         
-        .hint {
-            margin-top: 40px;
-            font-size: 0.9em;
+        .gallery-hint {
+            font-size: 0.85em;
             color: #adb5bd;
             font-style: italic;
+            text-align: center;
+            margin: 20px;
+            padding-bottom: 30px;
         }
         
-        .hint:before {
-            content: "💡";
-            margin-right: 8px;
-            opacity: 0.7;
-        }
-        
-        /* Анимации */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
+        /* Анимации - оптимизируем для производительности */
         @keyframes gentleFloat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        @keyframes floatUpRandom {
-            0% {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         
         @keyframes headNod {
             0% { transform: translateY(0); }
-            25% { transform: translateY(-8px); }
+            25% { transform: translateY(-6px); }
             50% { transform: translateY(0); }
-            75% { transform: translateY(4px); }
+            75% { transform: translateY(3px); }
             100% { transform: translateY(0); }
         }
         
         @keyframes headShake {
             0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
             100% { transform: translateX(0); }
         }
         
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+        @keyframes titleFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .head-nod {
@@ -583,143 +566,135 @@
             animation: headShake 0.8s ease;
         }
         
-        .sparkle {
-            animation: sparkle 1.5s infinite;
+        .title-fade {
+            animation: titleFade 0.5s ease forwards;
         }
         
-        .container {
-            animation: gentleFloat 6s ease-in-out infinite;
-        }
-        
-        /* Стили для сердечек */
+        /* Стили для сердечек - меньше и быстрее для мобильных */
         .heart {
-            position: absolute;
-            font-size: 24px;
+            position: fixed;
+            font-size: 20px;
             pointer-events: none;
             z-index: 9999;
             user-select: none;
             filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+            will-change: transform, opacity;
         }
         
-        /* Медиа-запросы */
-        @media (max-width: 768px) {
+        /* Медиа-запросы для очень маленьких экранов */
+        @media (max-width: 350px) {
             .container {
-                padding: 40px 25px;
+                padding: 20px 15px;
                 width: 95%;
             }
             
             .title {
-                font-size: 2.4em;
-                margin-bottom: 40px;
+                font-size: 1.9em;
             }
             
-            .gallery-title {
-                font-size: 2em;
+            .photo-title {
+                font-size: 1.5em;
+                margin: 50px 15px 15px;
             }
             
-            .question-text {
+            .photo-title.small {
+                font-size: 1.4em;
+            }
+            
+            .photo-title.large {
                 font-size: 1.7em;
             }
             
-            .info-title {
-                font-size: 2em;
-            }
-            
-            .info-text {
-                font-size: 1.2em;
-            }
-            
             #countdown {
-                gap: 15px;
-                flex-wrap: wrap;
+                gap: 8px;
             }
             
             .countdown-item {
-                min-width: calc(50% - 30px);
-                padding: 20px 10px;
+                padding: 12px 6px;
             }
             
             .countdown-number {
-                font-size: 2.8em;
+                font-size: 1.6em;
             }
             
-            .nav-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 20px;
+            .countdown-label {
+                font-size: 0.7em;
             }
             
-            .photo-image {
-                height: 300px;
-            }
-            
-            .answer-btn {
-                min-width: 220px;
-                padding: 15px 25px;
-            }
-            
-            .answer-btn.single {
-                min-width: 180px;
-            }
-            
-            .info-container {
-                padding: 40px 25px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .title {
-                font-size: 2em;
+            .photo-btn {
+                padding: 14px 25px;
+                font-size: 0.95em;
             }
             
             .question-text {
-                font-size: 1.4em;
-                padding: 0 15px;
+                font-size: 1.3em;
             }
             
             .info-title {
-                font-size: 1.7em;
+                font-size: 1.6em;
             }
             
             .info-text {
                 font-size: 1.1em;
             }
-            
-            #countdown {
-                flex-direction: column;
-                align-items: center;
+        }
+        
+        /* Ландшафтная ориентация */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .page-wrapper {
+                align-items: flex-start;
+                padding-top: 20px;
             }
             
-            .countdown-item {
-                width: 100%;
-                max-width: 200px;
+            .container {
+                margin-top: 20px;
+                max-height: 90vh;
+                overflow-y: auto;
             }
             
-            .photo-btn {
-                padding: 15px 35px;
-                font-size: 1em;
+            .photo-title {
+                margin: 40px 20px 15px;
+            }
+            
+            #gallery-content {
+                padding-bottom: 40px;
             }
             
             .photo-image {
-                height: 250px;
+                height: 200px;
+            }
+        }
+        
+        /* Для очень высоких экранов */
+        @media (min-height: 800px) {
+            .container {
+                padding: 30px 25px;
             }
             
-            .caption-text {
-                font-size: 1.1em;
+            .title {
+                font-size: 2.4em;
+                margin-bottom: 35px;
             }
             
-            .answer-btn {
-                min-width: 200px;
-                padding: 12px 20px;
-                font-size: 1em;
+            .photo-title {
+                font-size: 2em;
+                margin: 70px 20px 25px;
             }
             
-            .answer-btn.single {
-                min-width: 160px;
+            #countdown {
+                margin-bottom: 35px;
             }
             
-            .info-container {
-                padding: 30px 20px;
+            .countdown-item {
+                padding: 18px 10px;
+            }
+            
+            .countdown-number {
+                font-size: 2em;
+            }
+            
+            .photo-btn {
+                margin: 30px 0 40px;
             }
         }
     </style>
@@ -732,63 +707,66 @@
     </div>
     
     <!-- Основной контейнер -->
-    <div class="container">
-        <!-- Главный экран -->
-        <div id="main-screen">
-            <h1 class="title">Для моей любимой</h1>
-            
-            <div class="countdown-title">До Дня Святого Валентина осталось</div>
-            
-            <div id="countdown">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="days">00</div>
-                    <div class="countdown-label">Дней</div>
+    <div class="page-wrapper">
+        <div class="container">
+            <!-- Главный экран -->
+            <div id="main-screen">
+                <h1 class="title">Для моей любимой</h1>
+                
+                <div class="countdown-title">До Дня Святого Валентина осталось</div>
+                
+                <div id="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-label">Дней</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Часов</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Минут</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-label">Секунд</div>
+                    </div>
                 </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="hours">00</div>
-                    <div class="countdown-label">Часов</div>
+                
+                <div class="target-date">
+                    <strong>14 февраля</strong> в 00:00
                 </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="minutes">00</div>
-                    <div class="countdown-label">Минут</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="seconds">00</div>
-                    <div class="countdown-label">Секунд</div>
-                </div>
+                
+                <!-- Кнопка перехода к фоткам -->
+                <button class="photo-btn" id="go-to-photos">
+                    <span class="photo-icon">📸</span> Перейти к фоткам
+                </button>
+                
+                <div class="hint">Коснись экрана, чтобы увидеть сюрприз ❤️</div>
             </div>
-            
-            <div class="target-date">
-                <strong>14 февраля</strong> в 00:00
-            </div>
-            
-            <!-- Кнопка перехода к фоткам -->
-            <button class="photo-btn" id="go-to-photos">
-                <span class="photo-icon">📸</span> Перейти к фоткам
-            </button>
-            
-            <div class="hint">Кликай в любом месте, чтобы увидеть сюрприз ❤️</div>
+        </div>
+    </div>
+    
+    <!-- Галерея фотографий (полноэкранный режим) -->
+    <div class="gallery-container" id="gallery-screen">
+        <button class="close-gallery" id="close-gallery">×</button>
+        
+        <!-- Уникальный заголовок для каждого слайда -->
+        <div class="photo-title" id="photo-title"></div>
+        
+        <div class="photo-counter">
+            <span id="current-photo">0</span> из <span id="total-photos">0</span>
         </div>
         
-        <!-- Галерея фотографий (скрыта по умолчанию) -->
-        <div class="gallery-container" id="gallery-screen">
-            <button class="close-gallery" id="close-gallery">×</button>
-            
-            <h2 class="gallery-title">Наши лучшие моменты</h2>
-            
-            <div class="photo-counter">
-                <span id="current-photo">0</span> из <span id="total-photos">0</span>
-            </div>
-            
-            <!-- Навигационные кнопки -->
-            <button class="nav-btn prev" id="prev-photo">‹</button>
-            <button class="nav-btn next" id="next-photo">›</button>
-            
-            <!-- Контейнер для фотографий и вопросов -->
-            <div id="gallery-content"></div>
-            
-            <div class="hint" id="gallery-hint">Используй стрелки для навигации или нажимай на кнопки</div>
-        </div>
+        <!-- Навигационные кнопки -->
+        <button class="nav-btn prev" id="prev-photo">‹</button>
+        <button class="nav-btn next" id="next-photo">›</button>
+        
+        <!-- Контейнер для фотографий и вопросов -->
+        <div id="gallery-content"></div>
+        
+        <div class="gallery-hint" id="gallery-hint">Свайпай влево-вправо или нажимай на кнопки</div>
     </div>
 
     <script>
@@ -799,61 +777,85 @@
                 type: 'question',
                 question: 'А знаешь за что я тебя люблю?',
                 correctAnswer: 'За что?',
-                singleAnswer: true
+                singleAnswer: true,
+                title: 'Секрет моего сердца 💝'
             },
             
-            // Фотографии
+            // Фотографии с уникальными заголовками
             {
                 type: 'photo',
-                image: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                image: "photos/photo1.png",
                 date: "Наша первая встреча",
-                caption: "Помнишь этот день? Я был так взволнован, что почти забыл, как говорить. А ты улыбалась так, что у меня перехватило дыхание."
+                caption: "Помнишь этот день? Я был так взволнован, что почти забыл, как говорить. А ты улыбалась так, что у меня перехватило дыхание.",
+                title: "Момент, когда всё изменилось ✨",
+                titleSize: 'large'
             },
             {
                 type: 'photo',
-                image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                image: "photos/photo2.png",
                 date: "Первое совместное путешествие",
-                caption: "Этот закат мы наблюдали вместе, держась за руки. В тот момент я понял, что хочу видеть все закаты мира только с тобой."
+                caption: "Этот закат мы наблюдали вместе, держась за руки. В тот момент я понял, что хочу видеть все закаты мира только с тобой.",
+                title: "Закат, который соединил нас навсегда 🌅",
+                titleSize: 'normal'
             },
             {
                 type: 'photo',
-                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                image: "photos/photo3.png",
                 date: "Твой самый красивый день",
-                caption: "Ты всегда прекрасна, но в этот день ты сияла так, что затмевала всё вокруг. Я счастлив, что могу видеть твою улыбку каждый день."
-            },
-            {
-                type: 'photo',
-                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-                date: "Наши смешные моменты",
-                caption: "Мы можем смеяться над чем угодно, и это самое ценное. С тобой даже обычные дни превращаются в приключения."
-            },
-            {
-                type: 'photo',
-                image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-                date: "Тихое утро вместе",
-                caption: "Эти утренние моменты, когда мы просто пьём кофе и молча смотрим в окно, для меня дороже любых слов."
+                caption: "Ты всегда прекрасна, но в этот день ты сияла так, что затмевала всё вокруг. Я счастлив, что могу видеть твою улыбку каждый день.",
+                title: "Сияние, от которого светлеет мир 💫",
+                titleSize: 'large'
             },
             
-            // Вопрос 2 - 3 варианта с разным поведением (убрали "Люблю")
+            // Вопрос 2 - 3 варианта с разным поведением
             {
                 type: 'question',
                 question: 'Так стоп... Ты меня любишь?',
                 correctAnswer: 'Сильнее всех на свете',
-                wrongAnswers: ['Да', 'Нет']
+                wrongAnswers: ['Да', 'Нет'],
+                title: 'Проверка чувств ❤️‍🔥'
             },
             
-            // Остальные фотографии
+            // Остальные фотографии с уникальными заголовками
             {
                 type: 'photo',
-                image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-                date: "Твои задумчивые моменты",
-                caption: "Я люблю наблюдать, как ты о чём-то думаешь. В твоих глазах целые вселенные, и я благодарен, что могу в них смотреть."
+                image: "photos/photo4.png",
+                date: "Наши смешные моменты",
+                caption: "Мы можем смеяться над чем угодно, и это самое ценное. С тобой даже обычные дни превращаются в приключения.",
+                title: "Смех, который лечит душу 😂",
+                titleSize: 'normal'
             },
             {
                 type: 'photo',
-                image: "https://images.unsplash.com/photo-1492681290082-e932832941e6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-                date: "Наше будущее",
-                caption: "Эта фотография напоминает мне о всех мечтах, которые мы строим вместе. С тобой я верю, что всё возможно."
+                image: "photos/photo5.png",
+                date: "Тихое утро вместе",
+                caption: "Эти утренние моменты, когда мы просто пьём кофе и молча смотрим в окно, для меня дороже любых слов.",
+                title: "Тишина, которая говорит больше слов 🤫",
+                titleSize: 'small'
+            },
+            {
+                type: 'photo',
+                image: "photos/photo6.png",
+                date: "Твои задумчивые моменты",
+                caption: "Я люблю наблюдать, как ты о чём-то думаешь. В твоих глазах целые вселенные, и я благодарен, что могу в них смотреть.",
+                title: "Вселенная в твоих глазах 🌌",
+                titleSize: 'large'
+            },
+            {
+                type: 'photo',
+                image: "photos/photo7.png",
+                date: "Твои задумчивые моменты",
+                caption: "Я люблю наблюдать, как ты о чём-то думаешь. В твоих глазах целые вселенные, и я благодарен, что могу в них смотреть.",
+                title: "Вселенная в твоих глазах 🌌",
+                titleSize: 'large'
+            },
+            {
+                type: 'photo',
+                image: "photos/photo8.png",
+                date: "Твои задумчивые моменты",
+                caption: "Я люблю наблюдать, как ты о чём-то думаешь. В твоих глазах целые вселенные, и я благодарен, что могу в них смотреть.",
+                title: "Вселенная в твоих глазах 🌌",
+                titleSize: 'large'
             },
             
             // Финальное информационное сообщение
@@ -864,12 +866,15 @@
                 text: 'Моя любимая, готовься к самому волшебному вечеру!',
                 details: '14 февраля в 19:00 выходи из дома, и тебя будет ждать...',
                 highlight: 'НАСТОЯЩАЯ КАРЕТА!',
-                note: 'Оденься потеплее и приготовься к сказке 💖'
+                note: 'Оденься потеплее и приготовься к сказке 💖',
+                galleryTitle: 'Сюрприз, который запомнится навсегда! 🎠'
             }
         ];
         
         let currentItemIndex = 0;
         let questionAnswered = false;
+        let touchStartX = 0;
+        let touchEndX = 0;
         
         // Элементы DOM
         const mainScreen = document.getElementById('main-screen');
@@ -879,9 +884,23 @@
         const prevPhotoBtn = document.getElementById('prev-photo');
         const nextPhotoBtn = document.getElementById('next-photo');
         const galleryContent = document.getElementById('gallery-content');
+        const photoTitle = document.getElementById('photo-title');
         const currentPhotoSpan = document.getElementById('current-photo');
         const totalPhotosSpan = document.getElementById('total-photos');
         const galleryHint = document.getElementById('gallery-hint');
+        
+        // Уникальные заголовки для каждого типа контента
+        const titleTemplates = {
+            question1: "Секрет моего сердца 💝",
+            question2: "Проверка чувств ❤️‍🔥",
+            photo1: "Момент, когда всё изменилось ✨",
+            photo2: "Закат, который соединил нас навсегда 🌅",
+            photo3: "Сияние, от которого светлеет мир 💫",
+            photo4: "Смех, который лечит душу 😂",
+            photo5: "Тишина, которая говорит больше слов 🤫",
+            photo6: "Вселенная в твоих глазах 🌌",
+            info: "Сюрприз, который запомнится навсегда! 🎠"
+        };
         
         // Инициализация галереи
         function initGallery() {
@@ -895,15 +914,16 @@
             const item = galleryItems[currentItemIndex];
             galleryContent.innerHTML = '';
             
+            // Обновляем заголовок с анимацией
+            updateGalleryTitle(item);
+            
             // Обновляем счетчик только для фотографий
             const photoIndex = galleryItems.slice(0, currentItemIndex + 1)
                 .filter(i => i.type === 'photo').length;
             currentPhotoSpan.textContent = photoIndex;
             
-            // Обновляем подсказку в зависимости от типа контента
             if (item.type === 'question') {
                 showQuestion(item);
-                // Для вопросов скрываем навигацию
                 prevPhotoBtn.style.display = 'none';
                 nextPhotoBtn.style.display = 'none';
                 galleryHint.textContent = item.singleAnswer ? 
@@ -911,17 +931,78 @@
                     'Выбери правильный ответ ❤️';
             } else if (item.type === 'photo') {
                 showPhoto(item);
-                // Для фотографий показываем навигацию
                 prevPhotoBtn.style.display = 'flex';
                 nextPhotoBtn.style.display = 'flex';
-                galleryHint.textContent = 'Используй стрелки для навигации или нажимай на кнопки';
+                galleryHint.textContent = 'Свайпай влево-вправо или нажимай на кнопки';
             } else if (item.type === 'info') {
                 showInfo(item);
-                // Для финального слайда скрываем навигацию
                 prevPhotoBtn.style.display = 'flex';
                 nextPhotoBtn.style.display = 'none';
-                galleryHint.textContent = 'Это финальный слайд! Вернись на главный экран или посмотри фотографии ещё раз';
+                galleryHint.textContent = 'Это финал! Можно вернуться к фотографиям';
             }
+        }
+        
+        // Обновление заголовка галереи
+        function updateGalleryTitle(item) {
+            // Сначала скрываем с анимацией
+            photoTitle.style.opacity = '0';
+            photoTitle.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                // Устанавливаем новый заголовок
+                let title = '';
+                
+                if (item.type === 'question') {
+                    title = currentItemIndex === 0 ? 
+                        'Секрет моего сердца 💝' : 
+                        'Проверка чувств ❤️‍🔥';
+                } else if (item.type === 'photo') {
+                    // Берем заголовок из данных элемента
+                    title = item.title || getPhotoTitleByIndex(currentItemIndex);
+                    
+                    // Устанавливаем размер класса
+                    photoTitle.className = 'photo-title title-fade';
+                    if (item.titleSize === 'small') {
+                        photoTitle.classList.add('small');
+                    } else if (item.titleSize === 'large') {
+                        photoTitle.classList.add('large');
+                    }
+                } else if (item.type === 'info') {
+                    title = item.galleryTitle || 'Сюрприз, который запомнится навсегда! 🎠';
+                    photoTitle.className = 'photo-title title-fade';
+                }
+                
+                photoTitle.textContent = title;
+                
+                // Показываем с анимацией
+                setTimeout(() => {
+                    photoTitle.style.opacity = '1';
+                    photoTitle.style.transform = 'translateY(0)';
+                    photoTitle.style.transition = 'all 0.5s ease';
+                }, 50);
+            }, 150);
+        }
+        
+        // Вспомогательная функция для получения заголовка по индексу
+        function getPhotoTitleByIndex(index) {
+            const photoTitles = [
+                "Момент, когда всё изменилось ✨",
+                "Закат, который соединил нас навсегда 🌅",
+                "Сияние, от которого светлеет мир 💫",
+                "Смех, который лечит душу 😂",
+                "Тишина, которая говорит больше слов 🤫",
+                "Вселенная в твоих глазах 🌌"
+            ];
+            
+            // Считаем только фотографии
+            let photoCount = -1;
+            for (let i = 0; i <= index; i++) {
+                if (galleryItems[i].type === 'photo') {
+                    photoCount++;
+                }
+            }
+            
+            return photoTitles[photoCount] || "Наш особенный момент ❤️";
         }
         
         // Показать вопрос
@@ -929,19 +1010,17 @@
             let questionHTML = '';
             
             if (questionData.singleAnswer) {
-                // Только один вариант ответа (первый вопрос)
                 questionHTML = `
                     <div class="question-container">
                         <div class="question-text">${questionData.question}</div>
                         <div class="answers-container">
-                            <button class="answer-btn correct single" data-answer="correct">
+                            <button class="answer-btn correct" data-answer="correct">
                                 ${questionData.correctAnswer}
                             </button>
                         </div>
                     </div>
                 `;
             } else {
-                // Несколько вариантов (второй вопрос)
                 questionHTML = `
                     <div class="question-container">
                         <div class="question-text">${questionData.question}</div>
@@ -965,18 +1044,16 @@
             // Добавляем обработчики для кнопок
             document.querySelectorAll('.answer-btn').forEach(btn => {
                 btn.addEventListener('click', handleAnswerClick);
-                
-                // Для второго вопроса добавляем особые обработчики наведения
                 const type = btn.dataset.type;
                 if (type === 'nod') {
-                    btn.addEventListener('mouseenter', handleNodHover);
-                    btn.addEventListener('mouseleave', handleNodLeave);
+                    btn.addEventListener('touchstart', handleNodTouch);
+                    btn.addEventListener('touchend', handleNodLeave);
                 } else if (type === 'shake') {
-                    btn.addEventListener('mouseenter', handleShakeHover);
-                    btn.addEventListener('mouseleave', handleShakeLeave);
+                    btn.addEventListener('touchstart', handleShakeTouch);
+                    btn.addEventListener('touchend', handleShakeLeave);
                 } else if (type === 'red') {
-                    btn.addEventListener('mouseenter', handleRedHover);
-                    btn.addEventListener('mouseleave', handleRedLeave);
+                    btn.addEventListener('touchstart', handleRedTouch);
+                    btn.addEventListener('touchend', handleRedLeave);
                 }
             });
         }
@@ -985,7 +1062,7 @@
         function showPhoto(photoData) {
             const photoHTML = `
                 <div class="photo-frame">
-                    <img class="photo-image" src="${photoData.image}" alt="Наше фото">
+                    <img class="photo-image" src="${photoData.image}" alt="Наше фото" loading="lazy">
                     <div class="photo-caption">
                         <div class="caption-date">${photoData.date}</div>
                         <div class="caption-text">${photoData.caption}</div>
@@ -994,20 +1071,14 @@
             `;
             
             galleryContent.innerHTML = photoHTML;
-            
-            // Создаем сердечки при показе фото
-            createHeart(
-                window.innerWidth / 2,
-                window.innerHeight / 2,
-                'gallery'
-            );
+            createHeart(window.innerWidth / 2, window.innerHeight / 2, 'gallery');
         }
         
         // Показать информационное сообщение
         function showInfo(infoData) {
             const infoHTML = `
                 <div class="info-container">
-                    <span class="info-icon sparkle">${infoData.icon}</span>
+                    <span class="info-icon">${infoData.icon}</span>
                     <h2 class="info-title">${infoData.title}</h2>
                     <div class="info-text">
                         ${infoData.text}<br><br>
@@ -1021,53 +1092,43 @@
             `;
             
             galleryContent.innerHTML = infoHTML;
-            
-            // Создаем праздничные сердечки
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 5; i++) {
                 setTimeout(() => {
                     createHeart(
                         Math.random() * window.innerWidth,
                         window.innerHeight,
                         'celebration'
                     );
-                }, i * 200);
+                }, i * 300);
             }
         }
         
-        // Обработка наведения на кнопку "Сильнее всех на свете" (кивание головой - вверх-вниз)
-        function handleNodHover(e) {
-            const btn = e.target;
-            btn.classList.add('head-nod');
+        // Обработка касаний для кнопок
+        function handleNodTouch(e) {
+            e.target.classList.add('head-nod');
+            e.preventDefault();
         }
         
-        // Обработка отведения курсора от кнопки "Сильнее всех на свете"
         function handleNodLeave(e) {
-            const btn = e.target;
-            btn.classList.remove('head-nod');
+            e.target.classList.remove('head-nod');
         }
         
-        // Обработка наведения на кнопку "Да" (качание головой влево-вправо - "нет")
-        function handleShakeHover(e) {
-            const btn = e.target;
-            btn.classList.add('head-shake');
+        function handleShakeTouch(e) {
+            e.target.classList.add('head-shake');
+            e.preventDefault();
         }
         
-        // Обработка отведения курсора от кнопки "Да"
         function handleShakeLeave(e) {
-            const btn = e.target;
-            btn.classList.remove('head-shake');
+            e.target.classList.remove('head-shake');
         }
         
-        // Обработка наведения на кнопку "Нет" (становится красной)
-        function handleRedHover(e) {
-            const btn = e.target;
-            btn.classList.add('disabled-red');
+        function handleRedTouch(e) {
+            e.target.classList.add('disabled-red');
+            e.preventDefault();
         }
         
-        // Обработка отведения курсора от кнопки "Нет" (возвращается в исходное состояние)
         function handleRedLeave(e) {
-            const btn = e.target;
-            btn.classList.remove('disabled-red');
+            e.target.classList.remove('disabled-red');
         }
         
         // Обработка клика по ответу
@@ -1075,39 +1136,29 @@
             const btn = e.target;
             
             if (btn.classList.contains('correct')) {
-                // Правильный ответ
                 questionAnswered = true;
+                btn.style.transform = 'scale(1.1)';
                 
-                // Праздничные эффекты
-                btn.style.transform = 'scale(1.2)';
-                btn.style.animation = 'pulse 0.5s infinite';
-                
-                // Создаем много сердечек
-                for (let i = 0; i < 15; i++) {
+                for (let i = 0; i < 8; i++) {
                     setTimeout(() => {
                         createHeart(
                             Math.random() * window.innerWidth,
                             Math.random() * window.innerHeight,
                             'celebration'
                         );
-                    }, i * 100);
+                    }, i * 200);
                 }
                 
-                // Переходим к следующему элементу через 2 секунды
                 setTimeout(() => {
                     if (currentItemIndex < galleryItems.length - 1) {
                         currentItemIndex++;
                         updateGalleryDisplay();
                     }
-                }, 2000);
-                
-            } else if (btn.classList.contains('wrong')) {
-                // Неправильный ответ - ничего не происходит при клике
-                return;
+                }, 1500);
             }
         }
         
-        // Переключение на предыдущий элемент
+        // Навигация
         function prevItem() {
             if (currentItemIndex > 0) {
                 currentItemIndex--;
@@ -1115,16 +1166,13 @@
             }
         }
         
-        // Переключение на следующий элемент
         function nextItem() {
             if (currentItemIndex < galleryItems.length - 1) {
-                // Для вопросов проверяем, был ли ответ
                 if (galleryItems[currentItemIndex].type === 'question' && !questionAnswered) {
                     galleryHint.textContent = 'Сначала ответь на вопрос! ❤️';
                     galleryHint.style.color = '#d4a5a5';
-                    galleryHint.style.animation = 'headNod 1s';
                     setTimeout(() => {
-                        galleryHint.style.animation = '';
+                        galleryHint.style.color = '#adb5bd';
                     }, 1000);
                     return;
                 }
@@ -1133,17 +1181,15 @@
                 questionAnswered = false;
                 updateGalleryDisplay();
                 
-                // Если это последний слайд, запускаем праздничные эффекты
                 if (currentItemIndex === galleryItems.length - 1) {
-                    // Много сердечек для финального слайда
-                    for (let i = 0; i < 20; i++) {
+                    for (let i = 0; i < 10; i++) {
                         setTimeout(() => {
                             createHeart(
                                 Math.random() * window.innerWidth,
                                 Math.random() * window.innerHeight,
                                 'final'
                             );
-                        }, i * 150);
+                        }, i * 200);
                     }
                 }
             }
@@ -1151,58 +1197,37 @@
         
         // Переход к галерее
         function goToGallery() {
-            mainScreen.style.display = 'none';
+            document.body.style.overflow = 'hidden';
             galleryScreen.classList.add('active');
-            document.body.style.background = 'linear-gradient(135deg, #f0f2f5 0%, #e1e5eb 100%)';
-            
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 3; i++) {
                 setTimeout(() => {
                     createHeart(
                         Math.random() * window.innerWidth,
                         window.innerHeight,
                         'transition'
                     );
-                }, i * 200);
+                }, i * 300);
             }
         }
         
         // Возврат на главный экран
         function goToMain() {
             galleryScreen.classList.remove('active');
-            setTimeout(() => {
-                mainScreen.style.display = 'block';
-                document.body.style.background = 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)';
-                // Сбрасываем галерею
-                currentItemIndex = 0;
-                questionAnswered = false;
-                updateGalleryDisplay();
-            }, 300);
+            document.body.style.overflow = 'auto';
+            currentItemIndex = 0;
+            questionAnswered = false;
+            updateGalleryDisplay();
         }
         
-        // Навигация с помощью клавиатуры
-        function handleKeyDown(e) {
-            if (galleryScreen.classList.contains('active')) {
-                if (e.key === 'ArrowLeft') {
-                    prevItem();
-                } else if (e.key === 'ArrowRight') {
-                    nextItem();
-                } else if (e.key === 'Escape') {
-                    goToMain();
-                }
-            }
-        }
-        
-        // Функция создания сердечка (только для кликов по экрану и праздничных событий)
+        // Функция создания сердечка
         function createHeart(x, y, type = 'click') {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
             
-            const colors = ['#d4a5a5', '#e6b8b8', '#c9ada7', '#d8c3a5', '#e2c2c6'];
+            const colors = ['#d4a5a5', '#e6b8b8', '#c9ada7'];
             const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            const sizes = type === 'celebration' || type === 'final' ? [24, 28, 32, 36, 40] : [20, 24, 28, 32, 36];
-            const size = sizes[Math.floor(Math.random() * sizes.length)];
+            const size = type === 'celebration' || type === 'final' ? 22 : 18;
             
             heart.style.color = color;
             heart.style.fontSize = `${size}px`;
@@ -1210,40 +1235,44 @@
             heart.style.top = `${y - size/2}px`;
             
             const angle = Math.random() * Math.PI * 2;
-            const distance = type === 'celebration' || type === 'final' ? 200 : 100 + Math.random() * 100;
+            const distance = 80 + Math.random() * 80;
             const endX = Math.cos(angle) * distance;
-            const endY = -Math.abs(Math.sin(angle) * distance) - 50;
+            const endY = -Math.abs(Math.sin(angle) * distance) - 30;
             
-            heart.style.setProperty('--tx', `${endX}px`);
-            heart.style.setProperty('--ty', `${endY}px`);
-            heart.style.setProperty('--rot', `${(Math.random() - 0.5) * 360}deg`);
-            heart.style.animation = `floatUpRandom ${type === 'celebration' || type === 'final' ? 2 : 1.5}s ease-out forwards`;
+            heart.style.transform = `translate(${endX}px, ${endY}px) rotate(${(Math.random() - 0.5) * 180}deg)`;
+            heart.style.opacity = '0';
+            heart.style.transition = 'all 1s ease-out';
             
             document.body.appendChild(heart);
             
+            requestAnimationFrame(() => {
+                heart.style.transform = 'translate(0, 0) rotate(0deg)';
+                heart.style.opacity = '1';
+            });
+            
             setTimeout(() => {
-                if (heart.parentNode) {
-                    heart.parentNode.removeChild(heart);
-                }
-            }, type === 'celebration' || type === 'final' ? 2000 : 1500);
+                heart.style.transform = `translate(${endX}px, ${endY}px) rotate(${(Math.random() - 0.5) * 180}deg)`;
+                heart.style.opacity = '0';
+            }, 10);
+            
+            setTimeout(() => {
+                if (heart.parentNode) heart.parentNode.removeChild(heart);
+            }, 1100);
         }
         
         // Таймер до 14 февраля
         function updateCountdown() {
             const now = new Date();
             let targetYear = now.getFullYear();
-            
             const valentineThisYear = new Date(targetYear, 1, 14, 0, 0, 0);
-            if (now > valentineThisYear) {
-                targetYear++;
-            }
+            if (now > valentineThisYear) targetYear++;
             
             const targetDate = new Date(targetYear, 1, 14, 0, 0, 0);
             const timeLeft = targetDate - now;
             
             if (timeLeft < 0) {
                 document.getElementById('countdown').innerHTML = `
-                    <div style="font-size: 2em; color: #d4a5a5; padding: 40px;">
+                    <div style="font-size: 1.5em; color: #d4a5a5; padding: 20px;">
                         С Днем Святого Валентина! ❤️
                     </div>
                 `;
@@ -1261,32 +1290,72 @@
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
         
+        // Свайп навигация для мобильных
+        function handleTouchStart(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }
+        
+        function handleTouchEnd(e) {
+            if (!galleryScreen.classList.contains('active')) return;
+            
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > 50) { // Минимальное расстояние свайпа
+                if (diff > 0) {
+                    nextItem(); // Свайп влево
+                } else {
+                    prevItem(); // Свайп вправо
+                }
+            }
+        }
+        
         // Обработчики событий
         goToPhotosBtn.addEventListener('click', goToGallery);
         closeGalleryBtn.addEventListener('click', goToMain);
         prevPhotoBtn.addEventListener('click', prevItem);
         nextPhotoBtn.addEventListener('click', nextItem);
-        document.addEventListener('keydown', handleKeyDown);
         
-        // Клики для сердечек (только вне кнопок ответов)
+        // Свайп навигация
+        document.addEventListener('touchstart', handleTouchStart, {passive: true});
+        document.addEventListener('touchend', handleTouchEnd, {passive: true});
+        
+        // Клики для сердечек
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.nav-btn') && !e.target.closest('.photo-btn') && 
                 !e.target.closest('.close-gallery') && !e.target.closest('.answer-btn')) {
-                createHeart(e.clientX, e.clientY, 'click');
+                createHeart(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY, 'click');
             }
         });
+        
+        // Предотвращаем стандартное поведение касаний
+        document.addEventListener('touchmove', function(e) {
+            if (e.target.tagName === 'BUTTON') {
+                e.preventDefault();
+            }
+        }, { passive: false });
         
         // Инициализация
         initGallery();
         updateCountdown();
         setInterval(updateCountdown, 1000);
         
-        // Автоматические сердечки
+        // Автоматические сердечки каждые 45 секунд
         setInterval(() => {
             const x = Math.random() * window.innerWidth;
-            const y = window.innerHeight + 50;
+            const y = window.innerHeight + 30;
             createHeart(x, y, 'auto');
-        }, 30000);
+        }, 45000);
+        
+        // Предотвращаем масштабирование при двойном тапе на iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
